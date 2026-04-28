@@ -670,6 +670,8 @@
         // ==================================================================================
         // ODPOČET
         // ==================================================================================
+        let _countdownInterval = null;
+
         function startCountdown() {
             const dateField = document.querySelector('[data-field="weddingDate"]');
             const dateStr   = dateField ? dateField.textContent.trim() : "Apr 25, 2026 13:00:00";
@@ -679,23 +681,48 @@
             const elMins  = document.getElementById("cd-mins");
             const elSecs  = document.getElementById("cd-secs");
             const cdBox   = document.getElementById("countdown");
+            if (_countdownInterval) { clearInterval(_countdownInterval); _countdownInterval = null; }
+            // Restore countdown grid if it was replaced with "Užíváme si to!" message
+            if (cdBox && !cdBox.querySelector('#cd-days')) {
+                cdBox.innerHTML = `
+                    <div class="countdown-unit"><div class="countdown-num" id="cd-days">–</div><div class="countdown-label">dní</div></div>
+                    <div class="countdown-sep">:</div>
+                    <div class="countdown-unit"><div class="countdown-num" id="cd-hours">–</div><div class="countdown-label">hodin</div></div>
+                    <div class="countdown-sep">:</div>
+                    <div class="countdown-unit"><div class="countdown-num" id="cd-mins">–</div><div class="countdown-label">minut</div></div>
+                    <div class="countdown-sep">:</div>
+                    <div class="countdown-unit"><div class="countdown-num" id="cd-secs">–</div><div class="countdown-label">sekund</div></div>`;
+            }
+            const getEl = id => document.getElementById(id);
             function tick() {
                 const dist = target - Date.now();
                 if (dist < 0) {
                     if (cdBox) cdBox.innerHTML = '<div style="font-family:\'Playfair Display\',serif;font-size:1.3rem;color:var(--primary);text-align:center">Užíváme si to! 🎉</div>';
+                    if (_countdownInterval) { clearInterval(_countdownInterval); _countdownInterval = null; }
                     return;
                 }
                 const d = Math.floor(dist / 86400000);
                 const h = Math.floor((dist % 86400000) / 3600000);
                 const m = Math.floor((dist % 3600000) / 60000);
                 const s = Math.floor((dist % 60000) / 1000);
-                if (elDays)  elDays.textContent  = d;
-                if (elHours) elHours.textContent = String(h).padStart(2, '0');
-                if (elMins)  elMins.textContent  = String(m).padStart(2, '0');
-                if (elSecs)  elSecs.textContent  = String(s).padStart(2, '0');
+                const eDays  = getEl('cd-days');
+                const eHours = getEl('cd-hours');
+                const eMins  = getEl('cd-mins');
+                const eSecs  = getEl('cd-secs');
+                if (eDays)  eDays.textContent  = d;
+                if (eHours) eHours.textContent = String(h).padStart(2, '0');
+                if (eMins)  eMins.textContent  = String(m).padStart(2, '0');
+                if (eSecs)  eSecs.textContent  = String(s).padStart(2, '0');
             }
             tick();
-            setInterval(tick, 1000);
+            _countdownInterval = setInterval(tick, 1000);
+        }
+
+        function toDateTimeLocal(dateStr) {
+            const d = new Date(dateStr);
+            if (isNaN(d.getTime())) return '2026-04-25T13:00';
+            const pad = n => String(n).padStart(2, '0');
+            return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
         }
 
         // ==================================================================================
@@ -810,12 +837,18 @@
             };
 
             try {
+                // Sanitize programItems to remove any undefined values (Firestore rejects undefined)
+                const cleanProgramItems = programItems.map(item => {
+                    const clean = { emoji: item.emoji || '', time: item.time || '', title: item.title || '' };
+                    if (item.note != null) clean.note = item.note;
+                    return clean;
+                });
                 await setDoc(projectRef, {
                     content,
                     colors,
                     heroData,
                     srazMapData,
-                    programItems,
+                    programItems: cleanProgramItems,
                     seatingState
                 }, { merge: true });
                 statusEl.textContent = '✅ Uloženo!';
@@ -887,6 +920,9 @@
         function openSectionEdit(section) {
             if (section === 'hero') {
                 const op = heroData.overlayOpacity;
+                const weddingDateEl = document.querySelector('[data-field="weddingDate"]');
+                const currentDateStr = weddingDateEl ? weddingDateEl.textContent.trim() : 'Apr 25, 2026 13:00:00';
+                const currentDtLocal = toDateTimeLocal(currentDateStr);
                 const body = `
                     <div class="ef-group">
                         <label>🖼️ Fotka pozadí</label>
@@ -903,8 +939,13 @@
                             <span class="ef-range-val" id="overlay-label">${Math.round(op*100)}%</span>
                         </div>
                         <p style="font-size:0.8rem;color:#888;margin-top:4px;">Nižší hodnota = průhlednější (fotka více viditelná). Vyšší = světlejší překrytí.</p>
+                    </div>
+                    <div class="ef-group">
+                        <label>⏰ Datum a čas obřadu (odpočet)</label>
+                        <input type="datetime-local" id="hero-wedding-dt" class="ef-input" value="${currentDtLocal}">
+                        <p style="font-size:0.8rem;color:#888;margin-top:4px;">Nastavte přesný termín obřadu – odpočet se automaticky aktualizuje.</p>
                     </div>`;
-                openModal('🖼️ Editovat Hero – pozadí & překrytí', body, applyHeroEdit);
+                openModal('🖼️ Editovat Hero – pozadí, překrytí & termín', body, applyHeroEdit);
                 // Wire up live preview
                 const urlInput  = document.getElementById('hero-img-url');
                 const preview   = document.getElementById('hero-img-preview');
@@ -977,6 +1018,15 @@
             heroData.image = url || DEFAULT_HERO_IMAGE;
             heroData.overlayOpacity = op;
             applyHeroBackground(heroData.image, heroData.overlayOpacity);
+            const dtInput = document.getElementById('hero-wedding-dt');
+            if (dtInput && dtInput.value) {
+                const weddingDateEl = document.querySelector('[data-field="weddingDate"]');
+                if (weddingDateEl) {
+                    // Store with space instead of 'T' so new Date() parses it as local time
+                    weddingDateEl.textContent = dtInput.value.replace('T', ' ') + ':00';
+                }
+                startCountdown();
+            }
         }
 
         function applySrazEdit() {
@@ -1019,7 +1069,7 @@
                     editItems[i].time  = row.querySelector('.prog-time')?.value.trim()  || '';
                     editItems[i].title = row.querySelector('.prog-title')?.value.trim() || '';
                     const n = row.querySelector('.prog-note')?.value.trim();
-                    editItems[i].note  = n || undefined;
+                    editItems[i].note  = n || null;
                     // emoji is already updated via onChange callback
                 });
             }
