@@ -113,11 +113,27 @@
         /* --- GALLERY CTA FLOATING --- */
         .gallery-fab { position: fixed; bottom: 110px; right: 30px; width: auto; padding: 12px 22px; background: var(--primary); color: white; border-radius: 50px; display: flex; justify-content: center; align-items: center; font-size: 0.9rem; font-weight: 600; box-shadow: 0 12px 30px rgba(212, 163, 115, 0.6); border: none; cursor: pointer; z-index: 999; transition: transform 0.3s; text-decoration: none; gap: 8px; font-family: 'Poppins', sans-serif; }
         .gallery-fab:hover { transform: scale(1.08); color: white; }
+
+        /* --- EDIT MODE --- */
+        #edit-toolbar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: #2d3a21; color: #fff; padding: 10px 20px; z-index: 10000; align-items: center; gap: 14px; flex-wrap: wrap; box-shadow: 0 -4px 24px rgba(0,0,0,0.25); font-family: 'Poppins', sans-serif; font-size: 0.9rem; }
+        #edit-toolbar .et-label { font-weight: 700; font-size: 1rem; margin-right: 6px; }
+        #edit-toolbar .et-sep { width: 1px; height: 28px; background: rgba(255,255,255,0.25); }
+        #edit-toolbar label { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; }
+        #edit-toolbar input[type=color] { width: 32px; height: 28px; border: none; border-radius: 6px; cursor: pointer; padding: 2px; background: transparent; }
+        #edit-toolbar button { padding: 8px 18px; border: none; border-radius: 20px; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+        #edit-save-btn { background: #d4a373; color: #fff; }
+        #edit-cancel-btn { background: rgba(255,255,255,0.15); color: #fff; }
+        #edit-toolbar button:hover { opacity: 0.85; }
+        #edit-status { font-size: 0.8rem; color: #a8e6a0; margin-left: 4px; }
+        body.edit-mode { padding-bottom: 64px; }
+        body.edit-mode [data-field] { transition: outline 0.15s; border-radius: 3px; }
+        body.edit-mode [data-field]:hover { outline: 2px dashed var(--primary); outline-offset: 3px; cursor: text; }
+        body.edit-mode [data-field]:focus { outline: 2px solid var(--primary); outline-offset: 3px; background: rgba(212,163,115,0.08); }
     </style>
 </head>
 <body>
     <nav>
-        <a href="#hero" class="nav-brand" style="text-decoration:none;">A & J</a>
+        <a href="#hero" class="nav-brand" style="text-decoration:none;" data-field="navBrand">A & J</a>
         <div class="menu-toggle" id="mobile-menu">☰</div>
         <ul id="nav-ul">
             <li><a href="#hero">Domů</a></li>
@@ -129,17 +145,19 @@
     </nav>
 
     <section id="hero" class="hero">
-        <h1>Adéla & Jakub</h1>
-        <p class="subtitle">Budeme se brát! 💍</p>
-        <p style="font-size: 1.1rem; margin-bottom: 8px; color: var(--text-dark);">Sobota <strong>25. dubna 2026</strong> · Penzion Fojtství - Svatý Kopeček v Olomouci</p>
-        <p style="font-size: 1rem; color: var(--text-dark); opacity: 0.85; max-width: 520px; margin-bottom: 20px;">
+        <h1 data-field="heroTitle">Adéla & Jakub</h1>
+        <p class="subtitle" data-field="heroSubtitle">Budeme se brát! 💍</p>
+        <p style="font-size: 1.1rem; margin-bottom: 8px; color: var(--text-dark);" data-field="heroDate">Sobota <strong>25. dubna 2026</strong> · Penzion Fojtství - Svatý Kopeček v Olomouci</p>
+        <p style="font-size: 1rem; color: var(--text-dark); opacity: 0.85; max-width: 520px; margin-bottom: 20px;" data-field="heroText">
             Jsme nadšeni, že vás můžeme pozvat na jeden z nejkrásnějších dnů v našem životě.
             Těšíme se na každého z vás a věříme, že společně vytvoříme nezapomenutelné vzpomínky.
         </p>
         <div class="card" style="padding: 15px 40px; border-radius: 50px; display: inline-block;">
             <h3 id="countdown" style="margin:0; color: var(--primary);">Počítáme...</h3>
         </div>
-        <p style="font-size: 0.95rem; color: var(--text-dark); opacity: 0.7; margin-top: 10px;">do zahájení obřadu</p>
+        <p style="font-size: 0.95rem; color: var(--text-dark); opacity: 0.7; margin-top: 10px;" data-field="countdownLabel">do zahájení obřadu</p>
+        <!-- hidden field for countdown target date -->
+        <span data-field="weddingDate" style="display:none">Apr 25, 2026 13:00:00</span>
         <div class="hero-ctas">
             <a href="#program" class="btn btn-outline">Zobrazit program 📋</a>
             <button class="btn upload_trigger">Nahrát fotku 📸</button>
@@ -148,11 +166,11 @@
 
     <!-- 1. SEKCE: SVATEBNÍ SRAZ -->
     <section id="sraz">
-        <h2 class="section-title">Svatební sraz 🚗</h2>
+        <h2 class="section-title" data-field="srazSectionTitle">Svatební sraz 🚗</h2>
         <div class="card">
-            <h3 style="font-size: 1.8rem; margin-bottom: 10px;">Sraz: <strong>Globus Olomouc u ASKO NÁBYTEK</strong></h3>
-            <p style="font-size: 1.2rem;">Sejdeme se v sobotu <strong>25. dubna 2026</strong> ve <span style="font-size: 2rem; font-weight: 700; color: var(--primary);">⏰ 11:30</span></p>
-            <p>Odtud společně vyrazíme na <strong>Svatý Kopeček v Olomouci</strong>, kde proběhne obřad. 🎉</p>
+            <h3 style="font-size: 1.8rem; margin-bottom: 10px;" data-field="srazHeading">Sraz: <strong>Globus Olomouc u ASKO NÁBYTEK</strong></h3>
+            <p style="font-size: 1.2rem;" data-field="srazDate">Sejdeme se v sobotu <strong>25. dubna 2026</strong> ve <span style="font-size: 2rem; font-weight: 700; color: var(--primary);">⏰ 11:30</span></p>
+            <p data-field="srazDesc">Odtud společně vyrazíme na <strong>Svatý Kopeček v Olomouci</strong>, kde proběhne obřad. 🎉</p>
 
             <!-- Interaktivní grafika trasy -->
             <div class="route-visual">
@@ -170,13 +188,13 @@
                 </div>
             </div>
 
-            <h3 style="font-size: 1.3rem; margin-top: 30px; margin-bottom: 10px;">📍 Místo srazu – <strong>Globus Olomouc u ASKO NÁBYTEK</strong></h3>
+            <h3 style="font-size: 1.3rem; margin-top: 30px; margin-bottom: 10px;" data-field="srazMapLabel1">📍 Místo srazu – <strong>Globus Olomouc u ASKO NÁBYTEK</strong></h3>
             <div class="map-container">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2585.799276911016!2d17.22050497681161!3d49.601534548122665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47124f03c6fed89b%3A0x775332b8f7b9562b!2sGlobus%20Hypermarket!5e0!3m2!1scs!2scz!4v1775982606762!5m2!1scs!2scz" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <a href="https://maps.app.goo.gl/dfqZEPGRZnEfUd8XA" target="_blank" class="btn" style="margin-top: 20px;">Navigovat</a>
 
-            <h3 style="font-size: 1.3rem; margin-top: 30px; margin-bottom: 10px;">⛪ Cíl – Penzion Fojtství</h3>
+            <h3 style="font-size: 1.3rem; margin-top: 30px; margin-bottom: 10px;" data-field="srazMapLabel2">⛪ Cíl – Penzion Fojtství</h3>
             <div class="map-container">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2584.34838055933!2d17.341055476812826!3d49.628888246176274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47124b8dff71466d%3A0xa5c218c03eac1012!2sPenzion%20Fojtstv%C3%AD!5e0!3m2!1scs!2scz!4v1775982817995!5m2!1scs!2scz" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
@@ -186,76 +204,76 @@
 
     <!-- 2. SEKCE: SVATEBNÍ PROGRAM -->
     <section id="program">
-        <h2 class="section-title">Svatební program 📋</h2>
+        <h2 class="section-title" data-field="programSectionTitle">Svatební program 📋</h2>
         <div class="timeline">
             <div class="timeline-item">
                 <div class="timeline-content">
-                    <div class="timeline-time">11:30</div>
-                    <div class="timeline-title">Sraz – Globus Olomouc</div>
+                    <div class="timeline-time" data-field="prog0time">11:30</div>
+                    <div class="timeline-title" data-field="prog0title">Sraz – Globus Olomouc</div>
                 </div>
                 <div class="timeline-dot">🚗</div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-content">
-                    <div class="timeline-time">13:00</div>
-                    <div class="timeline-title">Svatební obřad</div>
+                    <div class="timeline-time" data-field="prog1time">13:00</div>
+                    <div class="timeline-title" data-field="prog1title">Svatební obřad</div>
                 </div>
                 <div class="timeline-dot">⛪</div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-content">
-                    <div class="timeline-time">14:00</div>
-                    <div class="timeline-title">Svatební hostina</div>
+                    <div class="timeline-time" data-field="prog2time">14:00</div>
+                    <div class="timeline-title" data-field="prog2title">Svatební hostina</div>
                 </div>
                 <div class="timeline-dot">🍽️</div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-content">
-                    <div class="timeline-time">15:00</div>
-                    <div class="timeline-title">Krájení dortu</div>
+                    <div class="timeline-time" data-field="prog3time">15:00</div>
+                    <div class="timeline-title" data-field="prog3title">Krájení dortu</div>
                 </div>
                 <div class="timeline-dot">🎂</div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-content">
-                    <div class="timeline-time">15:00</div>
-                    <div class="timeline-title">Příjezd DJ – kytara & zábava až do 21:00</div>
+                    <div class="timeline-time" data-field="prog4time">15:00</div>
+                    <div class="timeline-title" data-field="prog4title">Příjezd DJ – kytara & zábava až do 21:00</div>
                 </div>
                 <div class="timeline-dot">🎸</div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-content">
-                    <div class="timeline-time">16:00</div>
-                    <div class="timeline-title">Stříhání dámské i pánské kytice</div>
+                    <div class="timeline-time" data-field="prog5time">16:00</div>
+                    <div class="timeline-title" data-field="prog5title">Stříhání dámské i pánské kytice</div>
                 </div>
                 <div class="timeline-dot">💐</div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-content">
-                    <div class="timeline-time">16:30</div>
-                    <div class="timeline-title">Otevření alko baru & raut v salonku</div>
+                    <div class="timeline-time" data-field="prog6time">16:30</div>
+                    <div class="timeline-title" data-field="prog6title">Otevření alko baru & raut v salonku</div>
                 </div>
                 <div class="timeline-dot">🍸</div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-content">
-                    <div class="timeline-time">17:30</div>
-                    <div class="timeline-title">Hry & tombola</div>
-                    <p style="font-size:0.85rem;margin-top:5px;opacity:0.85;">Vezměte si s sebou <b>drobné</b> na tombolu! 🎉</p>
+                    <div class="timeline-time" data-field="prog7time">17:30</div>
+                    <div class="timeline-title" data-field="prog7title">Hry & tombola</div>
+                    <p style="font-size:0.85rem;margin-top:5px;opacity:0.85;" data-field="prog7note">Vezměte si s sebou <b>drobné</b> na tombolu! 🎉</p>
                 </div>
                 <div class="timeline-dot">🎲</div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-content">
-                    <div class="timeline-time">19:00</div>
-                    <div class="timeline-title">První tanec</div>
+                    <div class="timeline-time" data-field="prog8time">19:00</div>
+                    <div class="timeline-title" data-field="prog8title">První tanec</div>
                 </div>
                 <div class="timeline-dot">💃</div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-content">
-                    <div class="timeline-time">19:30</div>
-                    <div class="timeline-title">Večerní zábava</div>
+                    <div class="timeline-time" data-field="prog9time">19:30</div>
+                    <div class="timeline-title" data-field="prog9title">Večerní zábava</div>
                 </div>
                 <div class="timeline-dot">🎶</div>
             </div>
@@ -264,8 +282,8 @@
 
     <!-- SEKCE: ZASEDACÍ POŘÁDEK -->
     <section id="zasedaci-poradek">
-        <h2 class="section-title">Zasedací pořádek 🪑</h2>
-        <p style="text-align: center; margin-bottom: 30px;">Najděte si své místo u stolu. <br><em>(Můžete posouvat prstem do stran)</em></p>
+        <h2 class="section-title" data-field="seatingSectionTitle">Zasedací pořádek 🪑</h2>
+        <p style="text-align: center; margin-bottom: 30px;" data-field="seatingDesc">Najděte si své místo u stolu. <br><em>(Můžete posouvat prstem do stran)</em></p>
         <div class="seating-scroll-wrapper">
             <div class="seating-layout" id="seating-chart"></div>
         </div>
@@ -273,10 +291,10 @@
 
     <!-- 4. SEKCE: FOTOGALERIE -->
     <section id="galerie">
-        <h2 class="section-title">Fotogalerie 📸</h2>
+        <h2 class="section-title" data-field="galerieSectionTitle">Fotogalerie 📸</h2>
         <div class="card" style="text-align: center; margin-bottom: 30px;">
-            <h3 style="margin-bottom: 15px;">Vyfoťte momentku!</h3>
-            <p>Vyfoťte momentku a rovnou ji nahrajte. Zobrazí se všem v reálném čase.</p>
+            <h3 style="margin-bottom: 15px;" data-field="galerieCardTitle">Vyfoťte momentku!</h3>
+            <p data-field="galerieCardText">Vyfoťte momentku a rovnou ji nahrajte. Zobrazí se všem v reálném čase.</p>
             <button class="btn upload_trigger">Nahrát nové fotky ⬆️</button>
         </div>
         <div class="gallery-grid" id="photo-gallery">
@@ -285,9 +303,23 @@
     </section>
 
     <footer style="text-align: center; padding: 60px 20px; color: var(--primary); font-family: 'Playfair Display', serif;">
-        <h2>Těšíme se na vás!</h2>
-        <p style="font-size: 1.5rem;">❤️ Adéla & Jakub</p>
+        <h2 data-field="footerTitle">Těšíme se na vás!</h2>
+        <p style="font-size: 1.5rem;" data-field="footerNames">❤️ Adéla & Jakub</p>
     </footer>
+
+    <!-- EDIT TOOLBAR -->
+    <div id="edit-toolbar">
+        <span class="et-label">✏️ Režim úprav</span>
+        <div class="et-sep"></div>
+        <label title="Hlavní barva webu">🎨 Hlavní barva <input type="color" id="cp-primary" value="#d4a373"></label>
+        <label title="Sekundární barva">🌿 Sekundární <input type="color" id="cp-secondary" value="#e9edc9"></label>
+        <label title="Barva pozadí">🖼️ Pozadí <input type="color" id="cp-bg" value="#fefae0"></label>
+        <label title="Barva textu">🖊️ Text <input type="color" id="cp-text" value="#333d29"></label>
+        <div class="et-sep"></div>
+        <button id="edit-save-btn">💾 Uložit změny</button>
+        <button id="edit-cancel-btn">✖ Zrušit</button>
+        <span id="edit-status"></span>
+    </div>
 
     <a href="#galerie" class="gallery-fab">🖼️ Galerie</a>
     <button class="fab-btn upload_trigger" title="Nahrát fotku">📸</button>
@@ -295,62 +327,104 @@
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, addDoc, query, orderBy, onSnapshot }
+            from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         // ==================================================================================
         // ⚠️ KROK 1: VYPLŇTE SVÉ ÚDAJE Z FIREBASE A CLOUDINARY ⚠️
+        // Cloudinary config bude nastavena per-projekt v Firestore dokumentu:
+        //   projects/{projectId}.cloudinaryCloud + .cloudinaryPreset
         // ==================================================================================
         const firebaseConfig = {
-            apiKey: 
-            authDomain: 
-            databaseURL: 
-            projectId: 
-            storageBucket: 
-            messagingSenderId: 
-            appId:
-            };
-        const CLOUDINARY_CLOUD_NAME = 
-        const CLOUDINARY_UPLOAD_PRESET =
+            apiKey: "",
+            authDomain: "",
+            projectId: "",
+            storageBucket: "",
+            messagingSenderId: "",
+            appId: ""
+        };
+        // Záložní Cloudinary hodnoty (přepíší je hodnoty z Firestore, pokud jsou nastaveny)
+        const DEFAULT_CLOUDINARY_CLOUD  = "";
+        const DEFAULT_CLOUDINARY_PRESET = "";
         // ==================================================================================
 
+        // --- URL parametry ---
+        // ?p=projectId  → identifikátor projektu (např. ?p=svadba2026)
+        // ?edit=heslo   → aktivuje editační režim (heslo musí souhlasit s Firestore)
+        const urlParams   = new URLSearchParams(window.location.search);
+        const projectId   = urlParams.get('p') || 'default';
+        const editParam   = urlParams.get('edit');
+
+        // --- Firebase init ---
         const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const photosRef = ref(db, 'svatba_galerie');
+        const db  = getFirestore(app);
 
-        /* --- MOBILNÍ MENU --- */
-        document.getElementById('mobile-menu').addEventListener('click', () => document.getElementById('nav-ul').classList.toggle('open'));
-        document.querySelectorAll('#nav-ul a').forEach(link => link.addEventListener('click', () => document.getElementById('nav-ul').classList.remove('open')));
+        const projectRef = doc(db, 'projects', projectId);
+        const photosCol  = collection(db, 'projects', projectId, 'photos');
 
-        /* --- ZASEDACÍ POŘÁDEK (40 MÍST) --- */
-        const topTable = ["SESTRA NEV.", "NATÁLKA", "MÁMA NEV.", "TÁTA NEV.", "NEVĚSTA", "ŽENICH", "TÁTA ŽEN.", "MÁMA ŽEN.", "BRATR"];
-        const branch1_left = ["SÁRA", "MICHAL", "LOLA", "MAGDIČKA", "JAKUB"], branch1_right = ["MILAN", "MARIE", "LUCINKA", "ZUZANA"];
-        const branch2_left = ["ALICE", "SVĚDKYNĚ NEV.", "MARTIN", "VOJTĚCH", "MONIKA"], branch2_right = ["BABIČKA MARIE", "PETR", "PETRA", "KAROLÍNA", "PATRIK"];
-        const branch3_left = ["BABIČKA BOŽENA", "ROMAN", "JANA", "ONDŘEJ", "JAN"], branch3_right = ["LENKA", "PETR", "SVĚDEK ŽEN.", "DANIELA", "VOJTĚCH"];
-        const createChairs = (arr) => arr.map(name => `<div class="chair">${name}</div>`).join('');
-        document.getElementById("seating-chart").innerHTML = `
-            <div class="head-table-group"><div class="row-chairs">${createChairs(topTable)}</div><div class="table-surface head-table-surface"></div></div>
-            <div class="branches-group">
-                <div class="vertical-table-group"><div class="col-chairs">${createChairs(branch1_left)}</div><div class="table-surface vertical-table-surface"></div><div class="col-chairs">${createChairs(branch1_right)}</div></div>
-                <div class="vertical-table-group"><div class="col-chairs">${createChairs(branch2_left)}</div><div class="table-surface vertical-table-surface"></div><div class="col-chairs">${createChairs(branch2_right)}</div></div>
-                <div class="vertical-table-group"><div class="col-chairs">${createChairs(branch3_left)}</div><div class="table-surface vertical-table-surface"></div><div class="col-chairs">${createChairs(branch3_right)}</div></div>
-            </div>`;
+        // --- Mobilní menu ---
+        document.getElementById('mobile-menu').addEventListener('click', () =>
+            document.getElementById('nav-ul').classList.toggle('open'));
+        document.querySelectorAll('#nav-ul a').forEach(link =>
+            link.addEventListener('click', () => document.getElementById('nav-ul').classList.remove('open')));
 
-        /* --- FOTOGALERIE A REÁLNÝ ČAS --- */
-        Fancybox.bind('[data-fancybox="gallery"]', { Toolbar: { display: { left: ["infobar"], middle: ["zoomIn", "zoomOut", "slideshow"], right: ["download", "close"] } } });
+        // ==================================================================================
+        // SEATING CHART  (generuje HTML a přidá data-field ke každé stoličce)
+        // ==================================================================================
+        const defaultSeating = {
+            top:    ["SESTRA NEV.", "NATÁLKA", "MÁMA NEV.", "TÁTA NEV.", "NEVĚSTA", "ŽENICH", "TÁTA ŽEN.", "MÁMA ŽEN.", "BRATR"],
+            b1l:    ["SÁRA", "MICHAL", "LOLA", "MAGDIČKA", "JAKUB"],
+            b1r:    ["MILAN", "MARIE", "LUCINKA", "ZUZANA"],
+            b2l:    ["ALICE", "SVĚDKYNĚ NEV.", "MARTIN", "VOJTĚCH", "MONIKA"],
+            b2r:    ["BABIČKA MARIE", "PETR", "PETRA", "KAROLÍNA", "PATRIK"],
+            b3l:    ["BABIČKA BOŽENA", "ROMAN", "JANA", "ONDŘEJ", "JAN"],
+            b3r:    ["LENKA", "PETR", "SVĚDEK ŽEN.", "DANIELA", "VOJTĚCH"]
+        };
+
+        function renderSeating(names) {
+            const make = (arr, prefix) => arr.map((n, i) =>
+                `<div class="chair" data-field="${prefix}${i}">${n}</div>`).join('');
+            document.getElementById("seating-chart").innerHTML = `
+                <div class="head-table-group">
+                    <div class="row-chairs">${make(names.top, 'seatTop')}</div>
+                    <div class="table-surface head-table-surface"></div>
+                </div>
+                <div class="branches-group">
+                    <div class="vertical-table-group">
+                        <div class="col-chairs">${make(names.b1l, 'seatB1L')}</div>
+                        <div class="table-surface vertical-table-surface"></div>
+                        <div class="col-chairs">${make(names.b1r, 'seatB1R')}</div>
+                    </div>
+                    <div class="vertical-table-group">
+                        <div class="col-chairs">${make(names.b2l, 'seatB2L')}</div>
+                        <div class="table-surface vertical-table-surface"></div>
+                        <div class="col-chairs">${make(names.b2r, 'seatB2R')}</div>
+                    </div>
+                    <div class="vertical-table-group">
+                        <div class="col-chairs">${make(names.b3l, 'seatB3L')}</div>
+                        <div class="table-surface vertical-table-surface"></div>
+                        <div class="col-chairs">${make(names.b3r, 'seatB3R')}</div>
+                    </div>
+                </div>`;
+        }
+        renderSeating(defaultSeating);
+
+        // ==================================================================================
+        // GALERIE (Firestore real-time + Fancybox)
+        // ==================================================================================
+        Fancybox.bind('[data-fancybox="gallery"]', {
+            Toolbar: { display: { left: ["infobar"], middle: ["zoomIn", "zoomOut", "slideshow"], right: ["download", "close"] } }
+        });
         const galleryEl = document.getElementById('photo-gallery');
-
-        onValue(photosRef, (snapshot) => {
-            galleryEl.innerHTML = ''; 
-            if (!snapshot.exists()) return galleryEl.innerHTML = '<p class="loader-msg">Zatím tu nejsou žádné fotky. Buďte první!</p>';
-            
-            const photosArray = []; 
-            snapshot.forEach(child => {
-                photosArray.push(child.val());
-            });
-
-            photosArray.sort((a, b) => b.timestamp - a.timestamp);
-
-            photosArray.forEach(p => {
+        const photosQuery = query(photosCol, orderBy('timestamp', 'desc'));
+        onSnapshot(photosQuery, (snapshot) => {
+            galleryEl.innerHTML = '';
+            if (snapshot.empty) {
+                galleryEl.innerHTML = '<p class="loader-msg">Zatím tu nejsou žádné fotky. Buďte první!</p>';
+                return;
+            }
+            snapshot.forEach(docSnap => {
+                const p = docSnap.data();
                 const thumbUrl = p.url.replace('/upload/', '/upload/c_fill,h_400,w_400/');
                 const anchor = document.createElement('a');
                 anchor.href = p.url;
@@ -362,34 +436,184 @@
                 galleryEl.appendChild(anchor);
             });
         });
-        
-        const myWidget = cloudinary.createUploadWidget({ 
-            cloudName: CLOUDINARY_CLOUD_NAME, 
-            uploadPreset: CLOUDINARY_UPLOAD_PRESET, 
-            sources: ['local', 'camera'], 
-            language: "cs",
-            multiple: true
-        }, (err, res) => { 
-            if (!err && res && res.event === "success") {
-                push(photosRef, { 
-                    url: res.info.secure_url,
-                    timestamp: Date.now() 
-                }); 
+
+        // ==================================================================================
+        // CLOUDINARY UPLOAD
+        // ==================================================================================
+        function initCloudinary(cloudName, uploadPreset) {
+            if (!cloudName || !uploadPreset) return;
+            const widget = cloudinary.createUploadWidget({
+                cloudName, uploadPreset,
+                sources: ['local', 'camera'],
+                language: "cs",
+                multiple: true
+            }, (err, res) => {
+                if (!err && res && res.event === "success") {
+                    addDoc(photosCol, { url: res.info.secure_url, timestamp: Date.now() });
+                }
+            });
+            document.querySelectorAll('.upload_trigger').forEach(btn =>
+                btn.addEventListener('click', () => widget.open()));
+        }
+
+        // ==================================================================================
+        // ODPOČET
+        // ==================================================================================
+        function startCountdown() {
+            const dateField = document.querySelector('[data-field="weddingDate"]');
+            const dateStr   = dateField ? dateField.textContent.trim() : "Apr 25, 2026 13:00:00";
+            const target    = new Date(dateStr).getTime();
+            const el        = document.getElementById("countdown");
+            setInterval(() => {
+                const dist = target - Date.now();
+                if (dist < 0) { el.innerHTML = "Užíváme si to! 🎉"; return; }
+                const days  = Math.floor(dist / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                el.innerHTML = `${days} dní ${hours} hodin`;
+            }, 1000);
+        }
+
+        // ==================================================================================
+        // NAČTENÍ OBSAHU Z FIRESTORE + APLIKOVÁNÍ
+        // ==================================================================================
+
+        // Odstraní nebezpečné tagy a event handlery – zachová bezpečné formátování (strong, em, br…)
+        function sanitizeHTML(html) {
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            doc.querySelectorAll('script, style, iframe, object, embed, form, input, button').forEach(el => el.remove());
+            doc.querySelectorAll('*').forEach(el => {
+                [...el.attributes].forEach(attr => {
+                    if (attr.name.toLowerCase().startsWith('on') || attr.name.toLowerCase() === 'href' && /^javascript:/i.test(attr.value)) {
+                        el.removeAttribute(attr.name);
+                    }
+                });
+            });
+            return doc.body.innerHTML;
+        }
+
+        function applyColors(colors) {
+            if (!colors) return;
+            const root = document.documentElement;
+            if (colors.primary)   root.style.setProperty('--primary',    colors.primary);
+            if (colors.secondary) root.style.setProperty('--secondary',  colors.secondary);
+            if (colors.bgColor)   root.style.setProperty('--bg-color',   colors.bgColor);
+            if (colors.textDark)  root.style.setProperty('--text-dark',  colors.textDark);
+        }
+
+        function applyContent(content) {
+            if (!content) return;
+            Object.entries(content).forEach(([field, value]) => {
+                const el = document.querySelector(`[data-field="${field}"]`);
+                if (el) el.innerHTML = sanitizeHTML(value);
+            });
+        }
+
+        // ==================================================================================
+        // EDITAČNÍ REŽIM
+        // ==================================================================================
+        function hexFromCssVar(varName) {
+            const raw = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+            if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(raw)) return raw;
+            return raw;
+        }
+
+        function enableEditMode() {
+            document.body.classList.add('edit-mode');
+            const toolbar = document.getElementById('edit-toolbar');
+            toolbar.style.display = 'flex';
+
+            // Nastav color-pickery na aktuální hodnoty CSS proměnných
+            document.getElementById('cp-primary').value   = hexFromCssVar('--primary');
+            document.getElementById('cp-secondary').value = hexFromCssVar('--secondary');
+            document.getElementById('cp-bg').value        = hexFromCssVar('--bg-color');
+            document.getElementById('cp-text').value      = hexFromCssVar('--text-dark');
+
+            // Live preview pro color-pickery
+            const root = document.documentElement;
+            document.getElementById('cp-primary').addEventListener('input', e =>
+                root.style.setProperty('--primary', e.target.value));
+            document.getElementById('cp-secondary').addEventListener('input', e =>
+                root.style.setProperty('--secondary', e.target.value));
+            document.getElementById('cp-bg').addEventListener('input', e =>
+                root.style.setProperty('--bg-color', e.target.value));
+            document.getElementById('cp-text').addEventListener('input', e =>
+                root.style.setProperty('--text-dark', e.target.value));
+
+            // Všechny data-field elementy editovatelné
+            document.querySelectorAll('[data-field]').forEach(el => {
+                el.contentEditable = 'true';
+                el.spellcheck = false;
+            });
+
+            // Uložit
+            document.getElementById('edit-save-btn').addEventListener('click', saveChanges);
+
+            // Zrušit (odstraní ?edit parametr)
+            document.getElementById('edit-cancel-btn').addEventListener('click', () => {
+                urlParams.delete('edit');
+                window.location.search = urlParams.toString();
+            });
+        }
+
+        async function saveChanges() {
+            const statusEl = document.getElementById('edit-status');
+            statusEl.textContent = '⏳ Ukládám...';
+
+            const content = {};
+            document.querySelectorAll('[data-field]').forEach(el => {
+                content[el.dataset.field] = sanitizeHTML(el.innerHTML);
+            });
+
+            const colors = {
+                primary:   document.getElementById('cp-primary').value,
+                secondary: document.getElementById('cp-secondary').value,
+                bgColor:   document.getElementById('cp-bg').value,
+                textDark:  document.getElementById('cp-text').value,
+            };
+
+            try {
+                await setDoc(projectRef, { content, colors }, { merge: true });
+                statusEl.textContent = '✅ Uloženo!';
+                setTimeout(() => statusEl.textContent = '', 3000);
+            } catch (err) {
+                statusEl.textContent = '❌ Chyba: ' + err.message;
             }
-        });
+        }
 
-        document.querySelectorAll('.upload_trigger').forEach(btn => btn.addEventListener('click', () => myWidget.open()));
+        // ==================================================================================
+        // HLAVNÍ INIT
+        // ==================================================================================
+        async function init() {
+            let projectData = {};
+            try {
+                const snap = await getDoc(projectRef);
+                if (snap.exists()) projectData = snap.data();
+            } catch (e) {
+                console.warn('Firestore nedostupný, používám výchozí obsah.', e);
+            }
 
-        /* --- ODPOČET --- */
-        const weddingDate = new Date("Apr 25, 2026 13:00:00").getTime();
-        setInterval(() => {
-            const dist = weddingDate - new Date().getTime();
-            if(dist < 0) return document.getElementById("countdown").innerHTML = "Užíváme si to! 🎉";
-            const days = Math.floor(dist/(1000*60*60*24));
-            const hours = Math.floor((dist%(1000*60*60*24))/(1000*60*60));
-            document.getElementById("countdown").innerHTML = `${days} dní ${hours} hodin`;
-        }, 1000);
+            applyColors(projectData.colors);
+            applyContent(projectData.content);
 
+            // Pokud obsah ze Firestore přepsal zasedací pořádek, znovu renderuj (data-field se přepsal přes innerHTML)
+            // Pokud máme uložené jméno stoliček, jsou již v content a applyContent je aplikoval
+            // Nicméně pokud se seatingový obsah lišil, re-renderujeme ze zachovaných hodnot
+            // (jednodušší přístup: pokud nejsou uložená seat data, ponecháme default render)
+
+            // Cloudinary
+            const cloudName     = projectData.cloudinaryCloud   || DEFAULT_CLOUDINARY_CLOUD;
+            const uploadPreset  = projectData.cloudinaryPreset  || DEFAULT_CLOUDINARY_PRESET;
+            initCloudinary(cloudName, uploadPreset);
+
+            // Editační režim
+            if (editParam !== null && editParam === (projectData.editPassword || '')) {
+                enableEditMode();
+            }
+
+            startCountdown();
+        }
+
+        init();
     </script>
 </body>
 </html>
