@@ -129,6 +129,83 @@
         body.edit-mode [data-field] { transition: outline 0.15s; border-radius: 3px; }
         body.edit-mode [data-field]:hover { outline: 2px dashed var(--primary); outline-offset: 3px; cursor: text; }
         body.edit-mode [data-field]:focus { outline: 2px solid var(--primary); outline-offset: 3px; background: rgba(212,163,115,0.08); }
+
+        /* --- SECTION EDIT OVERLAYS --- */
+        body.edit-mode section { position: relative; }
+        .section-edit-overlay { display: none; }
+        body.edit-mode .section-edit-overlay { display: block; position: absolute; top: 110px; right: 20px; z-index: 500; }
+        .section-edit-btn { background: #2d3a21; color: white; border: none; border-radius: 20px; padding: 8px 18px; font-family: 'Poppins',sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.3); transition: transform 0.2s, background 0.2s; }
+        .section-edit-btn:hover { transform: scale(1.05); background: var(--primary); }
+
+        /* --- EDIT MODAL --- */
+        .edit-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 20000; align-items: flex-start; justify-content: center; padding: 24px 16px; overflow-y: auto; }
+        .edit-modal-overlay.open { display: flex; }
+        .edit-modal { background: #fff; border-radius: 20px; max-width: 680px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); font-family: 'Poppins',sans-serif; margin: auto; }
+        .edit-modal-header { background: var(--primary); color: white; padding: 18px 24px; border-radius: 20px 20px 0 0; display: flex; justify-content: space-between; align-items: center; }
+        .edit-modal-header h3 { color: white; font-size: 1.1rem; margin: 0; font-family: 'Poppins',sans-serif; }
+        .edit-modal-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .edit-modal-body { padding: 22px; max-height: 62vh; overflow-y: auto; }
+        .edit-modal-footer { padding: 14px 22px; border-top: 1px solid #f0ece3; display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+        .ef-group { margin-bottom: 16px; }
+        .ef-group label { display: block; font-weight: 600; font-size: 0.87rem; margin-bottom: 5px; color: #444; }
+        .ef-input { width: 100%; padding: 9px 12px; border: 2px solid #e9edc9; border-radius: 10px; font-family: 'Poppins',sans-serif; font-size: 0.87rem; outline: none; transition: border-color 0.2s; }
+        .ef-input:focus { border-color: var(--primary); }
+        .ef-row { display: flex; gap: 10px; }
+        .ef-row .ef-group { flex: 1; margin-bottom: 0; }
+        .ef-range-row { display: flex; align-items: center; gap: 10px; }
+        .ef-range-row input[type=range] { flex: 1; accent-color: var(--primary); }
+        .ef-range-val { font-size: 0.85rem; color: var(--primary); font-weight: 700; min-width: 38px; text-align: right; }
+        hr.ef-divider { border: none; border-top: 1px solid #f0ece3; margin: 16px 0; }
+        .ef-upload-row { display: flex; gap: 10px; align-items: center; }
+        .ef-upload-row .ef-input { flex: 1; }
+        .ef-small-btn { background: var(--primary); color: white; border: none; border-radius: 10px; padding: 9px 14px; font-family: 'Poppins',sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+        .ef-preview-img { width: 100%; max-height: 160px; object-fit: cover; border-radius: 12px; margin-top: 8px; display: none; }
+        .ef-preview-img.visible { display: block; }
+
+        /* --- EMOJI PICKER --- */
+        .emoji-trigger { background: #f8f4ef; border: 2px solid #e9edc9; border-radius: 10px; padding: 5px 11px; font-size: 1.4rem; cursor: pointer; transition: border-color 0.2s; line-height: 1; }
+        .emoji-trigger:hover { border-color: var(--primary); }
+        .emoji-popup { display: none; position: absolute; background: #fff; border: 2px solid var(--primary); border-radius: 14px; padding: 10px; z-index: 35000; box-shadow: 0 8px 30px rgba(0,0,0,0.2); width: 280px; }
+        .emoji-popup.open { display: block; }
+        .emoji-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 3px; }
+        .emoji-opt { background: none; border: none; font-size: 1.3rem; cursor: pointer; padding: 4px; border-radius: 6px; transition: background 0.1s; }
+        .emoji-opt:hover { background: #f8f4ef; }
+
+        /* --- PROGRAM EDITOR --- */
+        .prog-editor-list { display: flex; flex-direction: column; gap: 10px; }
+        .prog-editor-item { background: #f8f4ef; border-radius: 12px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; }
+        .prog-emoji-cell { flex-shrink: 0; position: relative; padding-top: 2px; }
+        .prog-fields { display: flex; flex-direction: column; gap: 7px; flex: 1; min-width: 0; }
+        .prog-fields .ef-input { font-size: 0.83rem; padding: 6px 10px; }
+        .prog-row { display: flex; gap: 7px; }
+        .prog-row .ef-input:first-child { max-width: 85px; }
+        .prog-rm { background: #ff6b6b; color: white; border: none; border-radius: 50%; width: 26px; height: 26px; font-size: 0.9rem; cursor: pointer; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; }
+        .prog-add-btn { width: 100%; margin-top: 8px; padding: 9px; background: var(--secondary); border: 2px dashed var(--primary); border-radius: 20px; font-family: 'Poppins',sans-serif; font-size: 0.87rem; font-weight: 600; cursor: pointer; transition: background 0.2s; color: var(--text-dark); }
+        .prog-add-btn:hover { background: var(--primary); color: white; border-style: solid; }
+
+        /* --- SEATING EDITOR --- */
+        .seating-tabs { display: flex; gap: 10px; margin-bottom: 16px; }
+        .seating-tab { flex: 1; padding: 10px 8px; border: 2px solid #e9edc9; border-radius: 12px; background: #f8f4ef; cursor: pointer; text-align: center; font-family: 'Poppins',sans-serif; font-size: 0.87rem; font-weight: 600; transition: all 0.2s; }
+        .seating-tab.active { border-color: var(--primary); background: rgba(212,163,115,0.12); color: var(--primary); }
+        .seating-group-ed { margin-bottom: 12px; border: 1.5px solid #e9edc9; border-radius: 12px; overflow: hidden; }
+        .seating-group-head { background: #f8f4ef; padding: 8px 14px; font-weight: 600; font-size: 0.87rem; }
+        .seating-group-body { padding: 10px 14px; display: flex; flex-direction: column; gap: 6px; }
+        .sn-row { display: flex; gap: 6px; align-items: center; }
+        .sn-row .ef-input { flex: 1; font-size: 0.82rem; padding: 6px 9px; }
+        .sn-rm { background: #ffcdd2; color: #c62828; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 0.9rem; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .sn-add { background: none; border: 1.5px dashed var(--primary); color: var(--primary); border-radius: 20px; padding: 5px 14px; font-family: 'Poppins',sans-serif; font-size: 0.82rem; cursor: pointer; transition: background 0.2s; }
+        .sn-add:hover { background: rgba(212,163,115,0.1); }
+
+        /* --- U-SHAPE SEATING --- */
+        .seating-u-wrap { display: flex; flex-direction: column; align-items: center; gap: 0; width: 1200px; margin: 0 auto; }
+        .seating-u-top { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .seating-u-top-chairs { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .seating-u-arms { display: flex; justify-content: space-between; width: 100%; align-items: flex-start; margin-top: -4px; }
+        .seating-u-arm { display: flex; align-items: flex-start; gap: 12px; }
+        .seating-u-arm.arm-left { flex-direction: row; }
+        .seating-u-arm.arm-right { flex-direction: row-reverse; }
+        .seating-u-arm-table { width: 55px; min-height: 280px; }
+        .seating-u-arm-chairs { display: flex; flex-direction: column; gap: 12px; }
     </style>
 </head>
 <body>
@@ -162,6 +239,9 @@
             <a href="#program" class="btn btn-outline">Zobrazit program 📋</a>
             <button class="btn upload_trigger">Nahrát fotku 📸</button>
         </div>
+        <div class="section-edit-overlay" id="hero-edit-overlay">
+            <button class="section-edit-btn" id="hero-edit-btn">🖼️ Editovat pozadí & rozostření</button>
+        </div>
     </section>
 
     <!-- 1. SEKCE: SVATEBNÍ SRAZ -->
@@ -178,105 +258,39 @@
                 <div class="route-car">🚗</div>
                 <div class="route-points">
                     <div class="route-point">
-                        <div class="route-icon start">🛒</div>
-                        <span class="route-label">Globus Olomouc</span>
+                        <div class="route-icon start" data-field="routeStartIcon">🛒</div>
+                        <span class="route-label" data-field="routeStartLabel">Globus Olomouc</span>
                     </div>
                     <div class="route-point">
-                        <div class="route-icon end">⛪</div>
-                        <span class="route-label">Svatý Kopeček</span>
+                        <div class="route-icon end" data-field="routeEndIcon">⛪</div>
+                        <span class="route-label" data-field="routeEndLabel">Svatý Kopeček</span>
                     </div>
                 </div>
             </div>
 
             <h3 style="font-size: 1.3rem; margin-top: 30px; margin-bottom: 10px;" data-field="srazMapLabel1">📍 Místo srazu – <strong>Globus Olomouc u ASKO NÁBYTEK</strong></h3>
-            <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2585.799276911016!2d17.22050497681161!3d49.601534548122665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47124f03c6fed89b%3A0x775332b8f7b9562b!2sGlobus%20Hypermarket!5e0!3m2!1scs!2scz!4v1775982606762!5m2!1scs!2scz" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="map-container" id="sraz-map1-container">
+                <iframe id="sraz-map1" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2585.799276911016!2d17.22050497681161!3d49.601534548122665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47124f03c6fed89b%3A0x775332b8f7b9562b!2sGlobus%20Hypermarket!5e0!3m2!1scs!2scz!4v1775982606762!5m2!1scs!2scz" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
-            <a href="https://maps.app.goo.gl/dfqZEPGRZnEfUd8XA" target="_blank" class="btn" style="margin-top: 20px;">Navigovat</a>
+            <a id="sraz-nav1" href="https://maps.app.goo.gl/dfqZEPGRZnEfUd8XA" target="_blank" class="btn" style="margin-top: 20px;">Navigovat</a>
 
             <h3 style="font-size: 1.3rem; margin-top: 30px; margin-bottom: 10px;" data-field="srazMapLabel2">⛪ Cíl – Penzion Fojtství</h3>
-            <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2584.34838055933!2d17.341055476812826!3d49.628888246176274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47124b8dff71466d%3A0xa5c218c03eac1012!2sPenzion%20Fojtstv%C3%AD!5e0!3m2!1scs!2scz!4v1775982817995!5m2!1scs!2scz" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="map-container" id="sraz-map2-container">
+                <iframe id="sraz-map2" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2584.34838055933!2d17.341055476812826!3d49.628888246176274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47124b8dff71466d%3A0xa5c218c03eac1012!2sPenzion%20Fojtstv%C3%AD!5e0!3m2!1scs!2scz!4v1775982817995!5m2!1scs!2scz" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
-            <a href="https://maps.app.goo.gl/Tk74LcE7NQ7GXB5D9" target="_blank" class="btn" style="margin-top: 20px;">Navigovat</a>
+            <a id="sraz-nav2" href="https://maps.app.goo.gl/Tk74LcE7NQ7GXB5D9" target="_blank" class="btn" style="margin-top: 20px;">Navigovat</a>
+        </div>
+        <div class="section-edit-overlay" id="sraz-edit-overlay">
+            <button class="section-edit-btn" id="sraz-edit-btn">🗺️ Editovat mapy & trasu</button>
         </div>
     </section>
 
     <!-- 2. SEKCE: SVATEBNÍ PROGRAM -->
     <section id="program">
         <h2 class="section-title" data-field="programSectionTitle">Svatební program 📋</h2>
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-time" data-field="prog0time">11:30</div>
-                    <div class="timeline-title" data-field="prog0title">Sraz – Globus Olomouc</div>
-                </div>
-                <div class="timeline-dot">🚗</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-time" data-field="prog1time">13:00</div>
-                    <div class="timeline-title" data-field="prog1title">Svatební obřad</div>
-                </div>
-                <div class="timeline-dot">⛪</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-time" data-field="prog2time">14:00</div>
-                    <div class="timeline-title" data-field="prog2title">Svatební hostina</div>
-                </div>
-                <div class="timeline-dot">🍽️</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-time" data-field="prog3time">15:00</div>
-                    <div class="timeline-title" data-field="prog3title">Krájení dortu</div>
-                </div>
-                <div class="timeline-dot">🎂</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-time" data-field="prog4time">15:00</div>
-                    <div class="timeline-title" data-field="prog4title">Příjezd DJ – kytara & zábava až do 21:00</div>
-                </div>
-                <div class="timeline-dot">🎸</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-time" data-field="prog5time">16:00</div>
-                    <div class="timeline-title" data-field="prog5title">Stříhání dámské i pánské kytice</div>
-                </div>
-                <div class="timeline-dot">💐</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-time" data-field="prog6time">16:30</div>
-                    <div class="timeline-title" data-field="prog6title">Otevření alko baru & raut v salonku</div>
-                </div>
-                <div class="timeline-dot">🍸</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-time" data-field="prog7time">17:30</div>
-                    <div class="timeline-title" data-field="prog7title">Hry & tombola</div>
-                    <p style="font-size:0.85rem;margin-top:5px;opacity:0.85;" data-field="prog7note">Vezměte si s sebou <b>drobné</b> na tombolu! 🎉</p>
-                </div>
-                <div class="timeline-dot">🎲</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-time" data-field="prog8time">19:00</div>
-                    <div class="timeline-title" data-field="prog8title">První tanec</div>
-                </div>
-                <div class="timeline-dot">💃</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <div class="timeline-time" data-field="prog9time">19:30</div>
-                    <div class="timeline-title" data-field="prog9title">Večerní zábava</div>
-                </div>
-                <div class="timeline-dot">🎶</div>
-            </div>
+        <div class="timeline" id="timeline-container"></div>
+        <div class="section-edit-overlay" id="program-edit-overlay">
+            <button class="section-edit-btn" id="program-edit-btn">📋 Editovat program</button>
         </div>
     </section>
 
@@ -286,6 +300,9 @@
         <p style="text-align: center; margin-bottom: 30px;" data-field="seatingDesc">Najděte si své místo u stolu. <br><em>(Můžete posouvat prstem do stran)</em></p>
         <div class="seating-scroll-wrapper">
             <div class="seating-layout" id="seating-chart"></div>
+        </div>
+        <div class="section-edit-overlay" id="seating-edit-overlay">
+            <button class="section-edit-btn" id="seating-edit-btn">🪑 Editovat zasedací pořádek</button>
         </div>
     </section>
 
@@ -321,6 +338,21 @@
         <span id="edit-status"></span>
     </div>
 
+    <!-- SECTION EDIT MODAL -->
+    <div class="edit-modal-overlay" id="section-edit-modal">
+        <div class="edit-modal">
+            <div class="edit-modal-header">
+                <h3 id="modal-title">✏️ Úpravy sekce</h3>
+                <button class="edit-modal-close" id="modal-close-btn">✕</button>
+            </div>
+            <div class="edit-modal-body" id="modal-body"></div>
+            <div class="edit-modal-footer">
+                <button class="btn" id="modal-apply-btn">✅ Použít</button>
+                <button class="btn btn-outline" id="modal-cancel-btn">✖ Zavřít</button>
+            </div>
+        </div>
+    </div>
+
     <a href="#galerie" class="gallery-fab">🖼️ Galerie</a>
     <button class="fab-btn upload_trigger" title="Nahrát fotku">📸</button>
 
@@ -346,6 +378,30 @@
         // Záložní Cloudinary hodnoty (přepíší je hodnoty z Firestore, pokud jsou nastaveny)
         const DEFAULT_CLOUDINARY_CLOUD  = "";
         const DEFAULT_CLOUDINARY_PRESET = "";
+
+        // Default hero background
+        const DEFAULT_HERO_IMAGE = 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80';
+        const DEFAULT_HERO_OVERLAY = 0.75;
+
+        // Default map URLs
+        const DEFAULT_MAP1_EMBED = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2585.799276911016!2d17.22050497681161!3d49.601534548122665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47124f03c6fed89b%3A0x775332b8f7b9562b!2sGlobus%20Hypermarket!5e0!3m2!1scs!2scz!4v1775982606762!5m2!1scs!2scz';
+        const DEFAULT_MAP1_NAV   = 'https://maps.app.goo.gl/dfqZEPGRZnEfUd8XA';
+        const DEFAULT_MAP2_EMBED = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2584.34838055933!2d17.341055476812826!3d49.628888246176274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47124b8dff71466d%3A0xa5c218c03eac1012!2sPenzion%20Fojtstv%C3%AD!5e0!3m2!1scs!2scz!4v1775982817995!5m2!1scs!2scz';
+        const DEFAULT_MAP2_NAV   = 'https://maps.app.goo.gl/Tk74LcE7NQ7GXB5D9';
+
+        // Default program items
+        const defaultProgram = [
+            { emoji: '🚗', time: '11:30', title: 'Sraz – Globus Olomouc' },
+            { emoji: '⛪', time: '13:00', title: 'Svatební obřad' },
+            { emoji: '🍽️', time: '14:00', title: 'Svatební hostina' },
+            { emoji: '🎂', time: '15:00', title: 'Krájení dortu' },
+            { emoji: '🎸', time: '15:00', title: 'Příjezd DJ – kytara & zábava až do 21:00' },
+            { emoji: '💐', time: '16:00', title: 'Stříhání dámské i pánské kytice' },
+            { emoji: '🍸', time: '16:30', title: 'Otevření alko baru & raut v salonku' },
+            { emoji: '🎲', time: '17:30', title: 'Hry & tombola', note: 'Vezměte si s sebou <b>drobné</b> na tombolu! 🎉' },
+            { emoji: '💃', time: '19:00', title: 'První tanec' },
+            { emoji: '🎶', time: '19:30', title: 'Večerní zábava' }
+        ];
         // ==================================================================================
 
         // --- URL parametry ---
@@ -361,6 +417,15 @@
 
         const projectRef = doc(db, 'projects', projectId);
         const photosCol  = collection(db, 'projects', projectId, 'photos');
+
+        // Mutable state (loaded from Firestore or defaults)
+        let heroData    = { image: DEFAULT_HERO_IMAGE, overlayOpacity: DEFAULT_HERO_OVERLAY };
+        let srazMapData = { map1Embed: DEFAULT_MAP1_EMBED, map1Nav: DEFAULT_MAP1_NAV,
+                            map2Embed: DEFAULT_MAP2_EMBED, map2Nav: DEFAULT_MAP2_NAV };
+        let programItems  = defaultProgram.map(i => ({ ...i }));
+        let seatingState  = { layout: 'default', names: null };  // names filled after defaultSeating defined
+        let cloudName     = DEFAULT_CLOUDINARY_CLOUD;
+        let cloudPreset   = DEFAULT_CLOUDINARY_PRESET;
 
         // --- Mobilní menu ---
         document.getElementById('mobile-menu').addEventListener('click', () =>
@@ -380,34 +445,114 @@
             b3l:    ["BABIČKA BOŽENA", "ROMAN", "JANA", "ONDŘEJ", "JAN"],
             b3r:    ["LENKA", "PETR", "SVĚDEK ŽEN.", "DANIELA", "VOJTĚCH"]
         };
+        seatingState.names = JSON.parse(JSON.stringify(defaultSeating));
 
-        function renderSeating(names) {
-            const make = (arr, prefix) => arr.map((n, i) =>
-                `<div class="chair" data-field="${prefix}${i}">${n}</div>`).join('');
+        function makeChairs(arr) {
+            return arr.map(n => `<div class="chair">${sanitizeText(n)}</div>`).join('');
+        }
+
+        function renderSeatingDefault(names) {
             document.getElementById("seating-chart").innerHTML = `
                 <div class="head-table-group">
-                    <div class="row-chairs">${make(names.top, 'seatTop')}</div>
+                    <div class="row-chairs">${makeChairs(names.top || [])}</div>
                     <div class="table-surface head-table-surface"></div>
                 </div>
                 <div class="branches-group">
                     <div class="vertical-table-group">
-                        <div class="col-chairs">${make(names.b1l, 'seatB1L')}</div>
+                        <div class="col-chairs">${makeChairs(names.b1l || [])}</div>
                         <div class="table-surface vertical-table-surface"></div>
-                        <div class="col-chairs">${make(names.b1r, 'seatB1R')}</div>
+                        <div class="col-chairs">${makeChairs(names.b1r || [])}</div>
                     </div>
                     <div class="vertical-table-group">
-                        <div class="col-chairs">${make(names.b2l, 'seatB2L')}</div>
+                        <div class="col-chairs">${makeChairs(names.b2l || [])}</div>
                         <div class="table-surface vertical-table-surface"></div>
-                        <div class="col-chairs">${make(names.b2r, 'seatB2R')}</div>
+                        <div class="col-chairs">${makeChairs(names.b2r || [])}</div>
                     </div>
                     <div class="vertical-table-group">
-                        <div class="col-chairs">${make(names.b3l, 'seatB3L')}</div>
+                        <div class="col-chairs">${makeChairs(names.b3l || [])}</div>
                         <div class="table-surface vertical-table-surface"></div>
-                        <div class="col-chairs">${make(names.b3r, 'seatB3R')}</div>
+                        <div class="col-chairs">${makeChairs(names.b3r || [])}</div>
                     </div>
                 </div>`;
         }
-        renderSeating(defaultSeating);
+
+        function renderSeatingU(names) {
+            document.getElementById("seating-chart").innerHTML = `
+                <div class="seating-u-wrap">
+                    <div class="seating-u-top">
+                        <div class="seating-u-top-chairs">${makeChairs(names.top || [])}</div>
+                        <div class="table-surface head-table-surface" style="width:60%"></div>
+                    </div>
+                    <div class="seating-u-arms">
+                        <div class="seating-u-arm arm-left">
+                            <div class="seating-u-arm-chairs">${makeChairs(names.uLeft || [])}</div>
+                            <div class="table-surface seating-u-arm-table"></div>
+                        </div>
+                        <div class="seating-u-arm arm-right">
+                            <div class="seating-u-arm-chairs">${makeChairs(names.uRight || [])}</div>
+                            <div class="table-surface seating-u-arm-table"></div>
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        function renderSeating(state) {
+            if (state.layout === 'u-shape') {
+                renderSeatingU(state.names);
+            } else {
+                renderSeatingDefault(state.names);
+            }
+        }
+
+        // Escapes text for safe insertion into HTML (no tags allowed)
+        function sanitizeText(str) {
+            return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        // ==================================================================================
+        // PROGRAM TIMELINE (dynamický render)
+        // ==================================================================================
+        function renderProgram(items) {
+            const container = document.getElementById('timeline-container');
+            if (!container) return;
+            container.innerHTML = items.map((item, idx) => {
+                const noteHtml = item.note ? `<p style="font-size:0.85rem;margin-top:5px;opacity:0.85;">${sanitizeHTML(item.note)}</p>` : '';
+                return `<div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-time">${sanitizeText(item.time)}</div>
+                        <div class="timeline-title">${sanitizeText(item.title)}</div>
+                        ${noteHtml}
+                    </div>
+                    <div class="timeline-dot">${sanitizeText(item.emoji)}</div>
+                </div>`;
+            }).join('');
+        }
+
+        // ==================================================================================
+        // HERO BACKGROUND
+        // ==================================================================================
+        function applyHeroBackground(imageUrl, overlayOpacity) {
+            const hero = document.querySelector('section#hero.hero');
+            if (!hero) return;
+            const op1 = parseFloat(overlayOpacity) || DEFAULT_HERO_OVERLAY;
+            const op2 = Math.min(op1 + 0.15, 1);
+            const url = imageUrl || DEFAULT_HERO_IMAGE;
+            hero.style.background = `linear-gradient(rgba(254,250,224,${op1}),rgba(233,237,201,${op2})),url('${url}') center/cover`;
+        }
+
+        // ==================================================================================
+        // SRAZ MAP DATA
+        // ==================================================================================
+        function applySrazData(data) {
+            const m1 = document.getElementById('sraz-map1');
+            const m2 = document.getElementById('sraz-map2');
+            const n1 = document.getElementById('sraz-nav1');
+            const n2 = document.getElementById('sraz-nav2');
+            if (m1) m1.src = data.map1Embed || DEFAULT_MAP1_EMBED;
+            if (m2) m2.src = data.map2Embed || DEFAULT_MAP2_EMBED;
+            if (n1) n1.href = data.map1Nav || DEFAULT_MAP1_NAV;
+            if (n2) n2.href = data.map2Nav || DEFAULT_MAP2_NAV;
+        }
 
         // ==================================================================================
         // GALERIE (Firestore real-time + Fancybox)
@@ -440,10 +585,12 @@
         // ==================================================================================
         // CLOUDINARY UPLOAD
         // ==================================================================================
-        function initCloudinary(cloudName, uploadPreset) {
-            if (!cloudName || !uploadPreset) return;
+        function initCloudinary(cName, cPreset) {
+            cloudName   = cName   || DEFAULT_CLOUDINARY_CLOUD;
+            cloudPreset = cPreset || DEFAULT_CLOUDINARY_PRESET;
+            if (!cloudName || !cloudPreset) return;
             const widget = cloudinary.createUploadWidget({
-                cloudName, uploadPreset,
+                cloudName, uploadPreset: cloudPreset,
                 sources: ['local', 'camera'],
                 language: "cs",
                 multiple: true
@@ -454,6 +601,19 @@
             });
             document.querySelectorAll('.upload_trigger').forEach(btn =>
                 btn.addEventListener('click', () => widget.open()));
+        }
+
+        function createHeroUploadWidget(onSuccess) {
+            if (!cloudName || !cloudPreset) { alert('Cloudinary není nastaveno pro tento projekt.'); return null; }
+            return cloudinary.createUploadWidget({
+                cloudName, uploadPreset: cloudPreset,
+                sources: ['local', 'camera'],
+                language: "cs",
+                multiple: false,
+                cropping: false
+            }, (err, res) => {
+                if (!err && res && res.event === "success") onSuccess(res.info.secure_url);
+            });
         }
 
         // ==================================================================================
@@ -539,11 +699,17 @@
             document.getElementById('cp-text').addEventListener('input', e =>
                 root.style.setProperty('--text-dark', e.target.value));
 
-            // Všechny data-field elementy editovatelné
+            // Všechny data-field elementy editovatelné (kromě route ikon – ty jsou editovány přes modal)
             document.querySelectorAll('[data-field]').forEach(el => {
                 el.contentEditable = 'true';
                 el.spellcheck = false;
             });
+
+            // Section edit buttons
+            document.getElementById('hero-edit-btn').addEventListener('click', () => openSectionEdit('hero'));
+            document.getElementById('sraz-edit-btn').addEventListener('click', () => openSectionEdit('sraz'));
+            document.getElementById('program-edit-btn').addEventListener('click', () => openSectionEdit('program'));
+            document.getElementById('seating-edit-btn').addEventListener('click', () => openSectionEdit('seating'));
 
             // Uložit
             document.getElementById('edit-save-btn').addEventListener('click', saveChanges);
@@ -572,12 +738,373 @@
             };
 
             try {
-                await setDoc(projectRef, { content, colors }, { merge: true });
+                await setDoc(projectRef, {
+                    content,
+                    colors,
+                    heroData,
+                    srazMapData,
+                    programItems,
+                    seatingState
+                }, { merge: true });
                 statusEl.textContent = '✅ Uloženo!';
                 setTimeout(() => statusEl.textContent = '', 3000);
             } catch (err) {
                 statusEl.textContent = '❌ Chyba: ' + err.message;
             }
+        }
+
+        // ==================================================================================
+        // SECTION EDIT MODAL SYSTEM
+        // ==================================================================================
+        const EMOJIS = ['🚗','⛪','🍽️','🎂','🎸','💐','🍸','🎲','💃','🎶','💍','🎉','🥂','📸','🌹','💒','🎊','🎵','🥳','🎤','🌟','⭐','🌺','🌸','🎻','🎼','💫','🎁','🎀','🍾','🍰','🎈','🕺','👰','🤵','💌','🌈','🎭','🏆','⏰','🧁','🔔','🎯','🌻','🌼','🎪','🪅','✨','🌙'];
+
+        function openModal(title, bodyHtml, onApply) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-body').innerHTML = bodyHtml;
+            document.getElementById('section-edit-modal').classList.add('open');
+            const applyBtn = document.getElementById('modal-apply-btn');
+            const newApply = applyBtn.cloneNode(true);
+            applyBtn.parentNode.replaceChild(newApply, applyBtn);
+            newApply.addEventListener('click', () => { onApply(); closeModal(); });
+            document.getElementById('modal-close-btn').onclick  = closeModal;
+            document.getElementById('modal-cancel-btn').onclick = closeModal;
+            document.getElementById('section-edit-modal').onclick = e => {
+                if (e.target === document.getElementById('section-edit-modal')) closeModal();
+            };
+        }
+
+        function closeModal() {
+            document.getElementById('section-edit-modal').classList.remove('open');
+            // Close any open emoji popups
+            document.querySelectorAll('.emoji-popup.open').forEach(p => p.classList.remove('open'));
+        }
+
+        function attachEmojiPicker(triggerId, popupId, onChange) {
+            const trigger = document.getElementById(triggerId);
+            const popup   = document.getElementById(popupId);
+            if (!trigger || !popup) return;
+            trigger.addEventListener('click', e => {
+                e.stopPropagation();
+                document.querySelectorAll('.emoji-popup.open').forEach(p => { if (p !== popup) p.classList.remove('open'); });
+                popup.classList.toggle('open');
+            });
+            popup.querySelectorAll('.emoji-opt').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    e.stopPropagation();
+                    trigger.textContent = btn.textContent;
+                    popup.classList.remove('open');
+                    if (onChange) onChange(btn.textContent);
+                });
+            });
+            document.addEventListener('click', () => popup.classList.remove('open'), { once: false });
+        }
+
+        function emojiPickerHtml(id, currentEmoji) {
+            const opts = EMOJIS.map(e => `<button class="emoji-opt" type="button">${e}</button>`).join('');
+            return `<div style="position:relative;display:inline-block">
+                <button class="emoji-trigger" id="ep-trigger-${id}" type="button">${currentEmoji}</button>
+                <div class="emoji-popup" id="ep-popup-${id}"><div class="emoji-grid">${opts}</div></div>
+            </div>`;
+        }
+
+        // --- HERO EDITOR ---
+        function openSectionEdit(section) {
+            if (section === 'hero') {
+                const op = heroData.overlayOpacity;
+                const body = `
+                    <div class="ef-group">
+                        <label>🖼️ Fotka pozadí</label>
+                        <div class="ef-upload-row">
+                            <input class="ef-input" id="hero-img-url" type="text" value="${sanitizeText(heroData.image)}" placeholder="URL obrázku">
+                            <button class="ef-small-btn" id="hero-upload-btn" type="button">📤 Nahrát</button>
+                        </div>
+                        <img id="hero-img-preview" class="ef-preview-img ${heroData.image ? 'visible' : ''}" src="${sanitizeText(heroData.image)}" alt="náhled">
+                    </div>
+                    <div class="ef-group">
+                        <label>🔲 Překrytí (rozostření světlosti): <span id="overlay-val">${Math.round(op*100)}%</span></label>
+                        <div class="ef-range-row">
+                            <input type="range" id="hero-overlay" min="0" max="95" step="1" value="${Math.round(op*100)}">
+                            <span class="ef-range-val" id="overlay-label">${Math.round(op*100)}%</span>
+                        </div>
+                        <p style="font-size:0.8rem;color:#888;margin-top:4px;">Nižší hodnota = průhlednější (fotka více viditelná). Vyšší = světlejší překrytí.</p>
+                    </div>`;
+                openModal('🖼️ Editovat Hero – pozadí & překrytí', body, applyHeroEdit);
+                // Wire up live preview
+                const urlInput  = document.getElementById('hero-img-url');
+                const preview   = document.getElementById('hero-img-preview');
+                const overlayEl = document.getElementById('hero-overlay');
+                const labelEl   = document.getElementById('overlay-label');
+                urlInput.addEventListener('input', () => {
+                    preview.src = urlInput.value;
+                    preview.classList.toggle('visible', !!urlInput.value);
+                    applyHeroBackground(urlInput.value, overlayEl.value / 100);
+                });
+                overlayEl.addEventListener('input', () => {
+                    labelEl.textContent = overlayEl.value + '%';
+                    applyHeroBackground(urlInput.value, overlayEl.value / 100);
+                });
+                // Cloudinary upload button
+                document.getElementById('hero-upload-btn').addEventListener('click', () => {
+                    const w = createHeroUploadWidget(url => {
+                        urlInput.value = url;
+                        preview.src = url;
+                        preview.classList.add('visible');
+                        applyHeroBackground(url, overlayEl.value / 100);
+                    });
+                    if (w) w.open();
+                });
+            }
+            else if (section === 'sraz') {
+                const d = srazMapData;
+                const body = `
+                    <h4 style="margin-bottom:12px;font-family:'Playfair Display',serif;color:var(--primary)">📍 Místo srazu (Mapa 1)</h4>
+                    <div class="ef-group"><label>Google Maps Embed URL</label>
+                        <textarea class="ef-input" id="sraz-m1-embed" rows="3">${sanitizeText(d.map1Embed)}</textarea>
+                        <p style="font-size:0.78rem;color:#888;margin-top:3px;">Zkopírujte z Google Maps: Sdílet → Vložit mapu → zkopírujte hodnotu atributu src z &lt;iframe&gt;</p>
+                    </div>
+                    <div class="ef-group"><label>Odkaz pro navigaci (URL tlačítka Navigovat)</label>
+                        <input class="ef-input" id="sraz-m1-nav" type="text" value="${sanitizeText(d.map1Nav)}">
+                    </div>
+                    <hr class="ef-divider">
+                    <h4 style="margin-bottom:12px;font-family:'Playfair Display',serif;color:var(--primary)">⛪ Cíl (Mapa 2)</h4>
+                    <div class="ef-group"><label>Google Maps Embed URL</label>
+                        <textarea class="ef-input" id="sraz-m2-embed" rows="3">${sanitizeText(d.map2Embed)}</textarea>
+                    </div>
+                    <div class="ef-group"><label>Odkaz pro navigaci</label>
+                        <input class="ef-input" id="sraz-m2-nav" type="text" value="${sanitizeText(d.map2Nav)}">
+                    </div>
+                    <hr class="ef-divider">
+                    <h4 style="margin-bottom:12px;font-family:'Playfair Display',serif;color:var(--primary)">🚗 Grafika trasy</h4>
+                    <p style="font-size:0.82rem;color:#888;margin-bottom:12px;">Texty ikon trasy lze editovat přímo na stránce kliknutím na ně (jsou zvýrazněné v režimu úprav).</p>`;
+                openModal('🗺️ Editovat mapy & trasu', body, applySrazEdit);
+                // Live preview for map 1
+                document.getElementById('sraz-m1-embed').addEventListener('input', e => {
+                    const el = document.getElementById('sraz-map1');
+                    if (el) el.src = e.target.value;
+                });
+                document.getElementById('sraz-m2-embed').addEventListener('input', e => {
+                    const el = document.getElementById('sraz-map2');
+                    if (el) el.src = e.target.value;
+                });
+            }
+            else if (section === 'program') {
+                openProgramEditor();
+            }
+            else if (section === 'seating') {
+                openSeatingEditor();
+            }
+        }
+
+        function applyHeroEdit() {
+            const url = document.getElementById('hero-img-url').value.trim();
+            const op  = parseInt(document.getElementById('hero-overlay').value) / 100;
+            heroData.image = url || DEFAULT_HERO_IMAGE;
+            heroData.overlayOpacity = op;
+            applyHeroBackground(heroData.image, heroData.overlayOpacity);
+        }
+
+        function applySrazEdit() {
+            srazMapData.map1Embed = document.getElementById('sraz-m1-embed').value.trim();
+            srazMapData.map1Nav   = document.getElementById('sraz-m1-nav').value.trim();
+            srazMapData.map2Embed = document.getElementById('sraz-m2-embed').value.trim();
+            srazMapData.map2Nav   = document.getElementById('sraz-m2-nav').value.trim();
+            applySrazData(srazMapData);
+        }
+
+        // --- PROGRAM EDITOR ---
+        function openProgramEditor() {
+            function buildList(items) {
+                return items.map((item, i) => `
+                    <div class="prog-editor-item" data-prog-idx="${i}">
+                        <div class="prog-emoji-cell">${emojiPickerHtml('prog'+i, item.emoji)}</div>
+                        <div class="prog-fields">
+                            <div class="prog-row">
+                                <input class="ef-input prog-time" type="text" placeholder="Čas" value="${sanitizeText(item.time)}">
+                                <input class="ef-input prog-title" type="text" placeholder="Název události" value="${sanitizeText(item.title)}">
+                            </div>
+                            <input class="ef-input prog-note" type="text" placeholder="Poznámka (volitelné)" value="${sanitizeText(item.note || '')}">
+                        </div>
+                        <button class="prog-rm" type="button" title="Odebrat">✕</button>
+                    </div>`).join('');
+            }
+
+            let editItems = programItems.map(i => ({ ...i }));
+            const body = `<div class="prog-editor-list" id="prog-editor-list">${buildList(editItems)}</div>
+                <button class="prog-add-btn" id="prog-add-btn" type="button">＋ Přidat položku programu</button>`;
+
+            openModal('📋 Editovat program', body, () => {
+                // Collect values from DOM
+                const list = document.getElementById('prog-editor-list');
+                const rows = list.querySelectorAll('.prog-editor-item');
+                programItems = Array.from(rows).map(row => {
+                    const i = parseInt(row.dataset.progIdx);
+                    const emoji = document.getElementById(`ep-trigger-prog${i}`)?.textContent || editItems[i]?.emoji || '⭐';
+                    return {
+                        emoji,
+                        time:  row.querySelector('.prog-time').value.trim(),
+                        title: row.querySelector('.prog-title').value.trim(),
+                        note:  row.querySelector('.prog-note').value.trim() || undefined
+                    };
+                }).filter(it => it.title);
+                renderProgram(programItems);
+            });
+
+            // Attach emoji pickers
+            editItems.forEach((item, i) => attachEmojiPicker('ep-trigger-prog'+i, 'ep-popup-prog'+i, null));
+
+            // Remove buttons
+            document.getElementById('prog-editor-list').addEventListener('click', e => {
+                if (e.target.classList.contains('prog-rm')) {
+                    const row = e.target.closest('.prog-editor-item');
+                    const idx = parseInt(row.dataset.progIdx);
+                    editItems.splice(idx, 1);
+                    document.getElementById('prog-editor-list').innerHTML = buildList(editItems);
+                    editItems.forEach((item, i) => attachEmojiPicker('ep-trigger-prog'+i, 'ep-popup-prog'+i, null));
+                    rewireProgAddBtn(editItems, buildList);
+                }
+            });
+
+            rewireProgAddBtn(editItems, buildList);
+        }
+
+        function rewireProgAddBtn(editItems, buildList) {
+            const btn = document.getElementById('prog-add-btn');
+            if (!btn) return;
+            btn.onclick = () => {
+                editItems.push({ emoji: '⭐', time: '', title: '' });
+                document.getElementById('prog-editor-list').innerHTML = buildList(editItems);
+                editItems.forEach((item, i) => attachEmojiPicker('ep-trigger-prog'+i, 'ep-popup-prog'+i, null));
+                rewireProgAddBtn(editItems, buildList);
+                // Scroll to new item
+                const list = document.getElementById('prog-editor-list');
+                list.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            };
+        }
+
+        // --- SEATING EDITOR ---
+        function openSeatingEditor() {
+            let editState = {
+                layout: seatingState.layout,
+                names: JSON.parse(JSON.stringify(seatingState.names))
+            };
+
+            const defaultNames = {
+                top:    [''],
+                b1l:    [''], b1r: [''],
+                b2l:    [''], b2r: [''],
+                b3l:    [''], b3r: ['']
+            };
+            // Ensure U-shape keys exist
+            if (!editState.names.uLeft)  editState.names.uLeft  = editState.names.b1l ? [...editState.names.b1l] : [''];
+            if (!editState.names.uRight) editState.names.uRight = editState.names.b1r ? [...editState.names.b1r] : [''];
+
+            function tabsHtml(layout) {
+                return `<div class="seating-tabs">
+                    <button class="seating-tab${layout==='default'?' active':''}" type="button" data-layout="default">🪑 Větve (výchozí)</button>
+                    <button class="seating-tab${layout==='u-shape'?' active':''}" type="button" data-layout="u-shape">🔤 Tvar U</button>
+                </div>`;
+            }
+
+            function groupHtml(key, label, names) {
+                const rows = names.map((n, i) => `
+                    <div class="sn-row" data-group="${key}" data-idx="${i}">
+                        <input class="ef-input sn-input" type="text" value="${sanitizeText(n)}" placeholder="Jméno hosta">
+                        <button class="sn-rm" type="button" title="Odebrat">✕</button>
+                    </div>`).join('');
+                return `<div class="seating-group-ed">
+                    <div class="seating-group-head">${label}</div>
+                    <div class="seating-group-body" id="snb-${key}">${rows}
+                        <button class="sn-add" type="button" data-group="${key}">＋ Přidat místo</button>
+                    </div>
+                </div>`;
+            }
+
+            function defaultGroupsHtml(names) {
+                return groupHtml('top', '🏛️ Hlavní stůl (hlava)', names.top || ['']) +
+                       groupHtml('b1l', '1. stůl – levá strana', names.b1l || ['']) +
+                       groupHtml('b1r', '1. stůl – pravá strana', names.b1r || ['']) +
+                       groupHtml('b2l', '2. stůl – levá strana', names.b2l || ['']) +
+                       groupHtml('b2r', '2. stůl – pravá strana', names.b2r || ['']) +
+                       groupHtml('b3l', '3. stůl – levá strana', names.b3l || ['']) +
+                       groupHtml('b3r', '3. stůl – pravá strana', names.b3r || ['']);
+            }
+
+            function uShapeGroupsHtml(names) {
+                return groupHtml('top',    '🏛️ Čelo U (hlavní stůl)', names.top || ['']) +
+                       groupHtml('uLeft',  '◀ Levé rameno U', names.uLeft || ['']) +
+                       groupHtml('uRight', '▶ Pravé rameno U', names.uRight || ['']);
+            }
+
+            function renderEditorBody(layout) {
+                return tabsHtml(layout) +
+                    (layout === 'u-shape' ? uShapeGroupsHtml(editState.names) : defaultGroupsHtml(editState.names));
+            }
+
+            const body = renderEditorBody(editState.layout);
+            openModal('🪑 Editovat zasedací pořádek', body, () => {
+                // Collect current input values
+                collectSeatingInputs(editState);
+                seatingState.layout = editState.layout;
+                seatingState.names  = editState.names;
+                renderSeating(seatingState);
+            });
+
+            wireSeatingEditor(editState, renderEditorBody);
+        }
+
+        function collectSeatingInputs(editState) {
+            document.querySelectorAll('#modal-body .sn-input').forEach(input => {
+                const row   = input.closest('.sn-row');
+                const group = row.dataset.group;
+                const idx   = parseInt(row.dataset.idx);
+                if (!editState.names[group]) editState.names[group] = [];
+                editState.names[group][idx] = input.value.trim();
+            });
+        }
+
+        function wireSeatingEditor(editState, renderEditorBody) {
+            const body = document.getElementById('modal-body');
+
+            // Layout tabs
+            body.querySelectorAll('.seating-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    collectSeatingInputs(editState);
+                    editState.layout = tab.dataset.layout;
+                    body.innerHTML = renderEditorBody(editState.layout);
+                    wireSeatingEditor(editState, renderEditorBody);
+                    // Live preview
+                    renderSeating({ layout: editState.layout, names: editState.names });
+                });
+            });
+
+            // Add / remove seat buttons
+            body.addEventListener('click', e => {
+                if (e.target.classList.contains('sn-rm')) {
+                    collectSeatingInputs(editState);
+                    const row   = e.target.closest('.sn-row');
+                    const group = row.dataset.group;
+                    const idx   = parseInt(row.dataset.idx);
+                    if (!editState.names[group]) return;
+                    editState.names[group].splice(idx, 1);
+                    if (editState.names[group].length === 0) editState.names[group] = [''];
+                    body.innerHTML = renderEditorBody(editState.layout);
+                    wireSeatingEditor(editState, renderEditorBody);
+                    renderSeating({ layout: editState.layout, names: editState.names });
+                }
+                if (e.target.classList.contains('sn-add')) {
+                    collectSeatingInputs(editState);
+                    const group = e.target.dataset.group;
+                    if (!editState.names[group]) editState.names[group] = [];
+                    editState.names[group].push('');
+                    body.innerHTML = renderEditorBody(editState.layout);
+                    wireSeatingEditor(editState, renderEditorBody);
+                    renderSeating({ layout: editState.layout, names: editState.names });
+                    // Focus new input
+                    const bodyEl = document.getElementById(`snb-${group}`);
+                    const inputs = bodyEl?.querySelectorAll('.sn-input');
+                    if (inputs?.length) inputs[inputs.length - 1].focus();
+                }
+            });
         }
 
         // ==================================================================================
@@ -595,15 +1122,36 @@
             applyColors(projectData.colors);
             applyContent(projectData.content);
 
-            // Pokud obsah ze Firestore přepsal zasedací pořádek, znovu renderuj (data-field se přepsal přes innerHTML)
-            // Pokud máme uložené jméno stoliček, jsou již v content a applyContent je aplikoval
-            // Nicméně pokud se seatingový obsah lišil, re-renderujeme ze zachovaných hodnot
-            // (jednodušší přístup: pokud nejsou uložená seat data, ponecháme default render)
+            // Hero background
+            if (projectData.heroData) {
+                heroData = { ...heroData, ...projectData.heroData };
+            }
+            applyHeroBackground(heroData.image, heroData.overlayOpacity);
+
+            // Sraz maps
+            if (projectData.srazMapData) {
+                srazMapData = { ...srazMapData, ...projectData.srazMapData };
+            }
+            applySrazData(srazMapData);
+
+            // Program
+            if (Array.isArray(projectData.programItems) && projectData.programItems.length > 0) {
+                programItems = projectData.programItems;
+            }
+            renderProgram(programItems);
+
+            // Seating
+            if (projectData.seatingState) {
+                seatingState = projectData.seatingState;
+                if (!seatingState.names) seatingState.names = JSON.parse(JSON.stringify(defaultSeating));
+            }
+            renderSeating(seatingState);
 
             // Cloudinary
-            const cloudName     = projectData.cloudinaryCloud   || DEFAULT_CLOUDINARY_CLOUD;
-            const uploadPreset  = projectData.cloudinaryPreset  || DEFAULT_CLOUDINARY_PRESET;
-            initCloudinary(cloudName, uploadPreset);
+            initCloudinary(
+                projectData.cloudinaryCloud  || DEFAULT_CLOUDINARY_CLOUD,
+                projectData.cloudinaryPreset || DEFAULT_CLOUDINARY_PRESET
+            );
 
             // Editační režim
             if (editParam !== null && editParam === (projectData.editPassword || '')) {
