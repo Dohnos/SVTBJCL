@@ -206,6 +206,39 @@
         .seating-u-arm.arm-right { flex-direction: row-reverse; }
         .seating-u-arm-table { width: 55px; min-height: 280px; }
         .seating-u-arm-chairs { display: flex; flex-direction: column; gap: 12px; }
+
+        /* --- COUNTDOWN GRID --- */
+        .countdown-grid { display: flex; gap: 16px; justify-content: center; align-items: flex-start; flex-wrap: wrap; }
+        .countdown-unit { text-align: center; min-width: 56px; }
+        .countdown-num { font-size: 2.1rem; font-weight: 700; color: var(--primary); line-height: 1; font-family: 'Playfair Display', serif; }
+        .countdown-label { font-size: 0.7rem; opacity: 0.6; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .countdown-sep { font-size: 1.8rem; font-weight: 700; color: var(--primary); opacity: 0.35; padding-top: 2px; line-height: 1; }
+
+        /* --- SEATING SEARCH --- */
+        .seating-search-wrap { display: flex; justify-content: center; margin-bottom: 22px; }
+        .seating-search { padding: 12px 22px; border: 2px solid var(--primary); border-radius: 25px; font-family: 'Poppins', sans-serif; font-size: 0.95rem; width: 300px; max-width: 100%; outline: none; background: var(--card-bg); color: var(--text-dark); transition: box-shadow 0.2s; }
+        .seating-search:focus { box-shadow: 0 0 0 3px rgba(212,163,115,0.25); }
+        .chair.highlighted { background: #ffe566 !important; border-color: var(--primary) !important; transform: scale(1.1); box-shadow: 0 6px 20px rgba(212,163,115,0.5) !important; transition: all 0.3s; position: relative; z-index: 2; }
+
+        /* --- SEATING DRAG SCROLL --- */
+        .seating-scroll-wrapper { cursor: grab; }
+        .seating-scroll-wrapper.is-dragging { cursor: grabbing; user-select: none; }
+
+        /* --- PROGRAM REORDER ARROWS --- */
+        .prog-reorder { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; margin-top: 2px; }
+        .prog-mv { background: #f0ece3; border: 1.5px solid #e9edc9; border-radius: 6px; width: 28px; height: 22px; font-size: 0.65rem; cursor: pointer; color: var(--text-dark); display: flex; align-items: center; justify-content: center; transition: background 0.15s, color 0.15s; line-height: 1; }
+        .prog-mv:hover:not([disabled]) { background: var(--primary); color: white; border-color: var(--primary); }
+        .prog-mv[disabled] { opacity: 0.28; cursor: default; }
+
+        /* --- PRINT STYLES --- */
+        @media print {
+            nav, .fab-btn, .gallery-fab, #edit-toolbar, .section-edit-overlay, footer,
+            #galerie, #sraz, #hero, #program, .seating-search-wrap { display: none !important; }
+            body { padding: 0 !important; background: white !important; }
+            section { padding: 20px !important; }
+            .seating-scroll-wrapper { overflow: visible !important; box-shadow: none !important; border: none !important; padding: 10px !important; cursor: default !important; }
+            .seating-layout, .seating-u-wrap { width: auto !important; }
+        }
     </style>
 </head>
 <body>
@@ -229,8 +262,16 @@
             Jsme nadšeni, že vás můžeme pozvat na jeden z nejkrásnějších dnů v našem životě.
             Těšíme se na každého z vás a věříme, že společně vytvoříme nezapomenutelné vzpomínky.
         </p>
-        <div class="card" style="padding: 15px 40px; border-radius: 50px; display: inline-block;">
-            <h3 id="countdown" style="margin:0; color: var(--primary);">Počítáme...</h3>
+        <div class="card" style="padding: 20px 40px; border-radius: 50px; display: inline-block;">
+            <div id="countdown" class="countdown-grid">
+                <div class="countdown-unit"><div class="countdown-num" id="cd-days">–</div><div class="countdown-label">dní</div></div>
+                <div class="countdown-sep">:</div>
+                <div class="countdown-unit"><div class="countdown-num" id="cd-hours">–</div><div class="countdown-label">hodin</div></div>
+                <div class="countdown-sep">:</div>
+                <div class="countdown-unit"><div class="countdown-num" id="cd-mins">–</div><div class="countdown-label">minut</div></div>
+                <div class="countdown-sep">:</div>
+                <div class="countdown-unit"><div class="countdown-num" id="cd-secs">–</div><div class="countdown-label">sekund</div></div>
+            </div>
         </div>
         <p style="font-size: 0.95rem; color: var(--text-dark); opacity: 0.7; margin-top: 10px;" data-field="countdownLabel">do zahájení obřadu</p>
         <!-- hidden field for countdown target date -->
@@ -298,7 +339,10 @@
     <section id="zasedaci-poradek">
         <h2 class="section-title" data-field="seatingSectionTitle">Zasedací pořádek 🪑</h2>
         <p style="text-align: center; margin-bottom: 30px;" data-field="seatingDesc">Najděte si své místo u stolu. <br><em>(Můžete posouvat prstem do stran)</em></p>
-        <div class="seating-scroll-wrapper">
+        <div class="seating-search-wrap">
+            <input class="seating-search" id="seating-search" type="search" placeholder="🔍 Hledat své jméno u stolu...">
+        </div>
+        <div class="seating-scroll-wrapper" id="seating-scroll">
             <div class="seating-layout" id="seating-chart"></div>
         </div>
         <div class="section-edit-overlay" id="seating-edit-overlay">
@@ -630,14 +674,28 @@
             const dateField = document.querySelector('[data-field="weddingDate"]');
             const dateStr   = dateField ? dateField.textContent.trim() : "Apr 25, 2026 13:00:00";
             const target    = new Date(dateStr).getTime();
-            const el        = document.getElementById("countdown");
-            setInterval(() => {
+            const elDays  = document.getElementById("cd-days");
+            const elHours = document.getElementById("cd-hours");
+            const elMins  = document.getElementById("cd-mins");
+            const elSecs  = document.getElementById("cd-secs");
+            const cdBox   = document.getElementById("countdown");
+            function tick() {
                 const dist = target - Date.now();
-                if (dist < 0) { el.innerHTML = "Užíváme si to! 🎉"; return; }
-                const days  = Math.floor(dist / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                el.innerHTML = `${days} dní ${hours} hodin`;
-            }, 1000);
+                if (dist < 0) {
+                    if (cdBox) cdBox.innerHTML = '<div style="font-family:\'Playfair Display\',serif;font-size:1.3rem;color:var(--primary);text-align:center">Užíváme si to! 🎉</div>';
+                    return;
+                }
+                const d = Math.floor(dist / 86400000);
+                const h = Math.floor((dist % 86400000) / 3600000);
+                const m = Math.floor((dist % 3600000) / 60000);
+                const s = Math.floor((dist % 60000) / 1000);
+                if (elDays)  elDays.textContent  = d;
+                if (elHours) elHours.textContent = String(h).padStart(2, '0');
+                if (elMins)  elMins.textContent  = String(m).padStart(2, '0');
+                if (elSecs)  elSecs.textContent  = String(s).padStart(2, '0');
+            }
+            tick();
+            setInterval(tick, 1000);
         }
 
         // ==================================================================================
@@ -680,8 +738,14 @@
         // ==================================================================================
         function hexFromCssVar(varName) {
             const raw = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
-            if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(raw)) return raw;
-            return raw;
+            if (/^#[0-9a-f]{6}$/i.test(raw)) return raw;
+            if (/^#[0-9a-f]{3}$/i.test(raw)) {
+                const [, r, g, b] = raw.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i);
+                return '#' + r + r + g + g + b + b;
+            }
+            const m = raw.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/i);
+            if (m) return '#' + [m[1], m[2], m[3]].map(n => parseInt(n).toString(16).padStart(2, '0')).join('');
+            return '#d4a373';
         }
 
         function enableEditMode() {
@@ -708,6 +772,7 @@
 
             // Všechny data-field elementy editovatelné (kromě route ikon – ty jsou editovány přes modal)
             document.querySelectorAll('[data-field]').forEach(el => {
+                if (getComputedStyle(el).display === 'none') return; // skip hidden fields
                 el.contentEditable = 'true';
                 el.spellcheck = false;
             });
@@ -924,6 +989,8 @@
 
         // --- PROGRAM EDITOR ---
         function openProgramEditor() {
+            let editItems = programItems.map(i => ({ ...i }));
+
             function buildList(items) {
                 return items.map((item, i) => `
                     <div class="prog-editor-item" data-prog-idx="${i}">
@@ -935,61 +1002,93 @@
                             </div>
                             <input class="ef-input prog-note" type="text" placeholder="Poznámka (volitelné)" value="${sanitizeText(item.note || '')}">
                         </div>
+                        <div class="prog-reorder">
+                            <button class="prog-mv prog-up" type="button" title="Posunout nahoru"${i === 0 ? ' disabled' : ''}>▲</button>
+                            <button class="prog-mv prog-dn" type="button" title="Posunout dolů"${i === items.length - 1 ? ' disabled' : ''}>▼</button>
+                        </div>
                         <button class="prog-rm" type="button" title="Odebrat">✕</button>
                     </div>`).join('');
             }
 
-            let editItems = programItems.map(i => ({ ...i }));
+            function collectDOMtoItems() {
+                const list = document.getElementById('prog-editor-list');
+                if (!list) return;
+                list.querySelectorAll('.prog-editor-item').forEach(row => {
+                    const i = parseInt(row.dataset.progIdx);
+                    if (i < 0 || i >= editItems.length) return;
+                    editItems[i].time  = row.querySelector('.prog-time')?.value.trim()  || '';
+                    editItems[i].title = row.querySelector('.prog-title')?.value.trim() || '';
+                    const n = row.querySelector('.prog-note')?.value.trim();
+                    editItems[i].note  = n || undefined;
+                    // emoji is already updated via onChange callback
+                });
+            }
+
+            function attachAllEmojis() {
+                editItems.forEach((item, i) => {
+                    const idx = i; // capture current index for async callback safety
+                    attachEmojiPicker('ep-trigger-prog' + idx, 'ep-popup-prog' + idx, emoji => {
+                        editItems[idx].emoji = emoji;
+                    });
+                });
+            }
+
+            function refreshList() {
+                document.getElementById('prog-editor-list').innerHTML = buildList(editItems);
+                attachAllEmojis();
+                wireProgActions();
+            }
+
+            function wireProgActions() {
+                const listEl = document.getElementById('prog-editor-list');
+                const addBtn = document.getElementById('prog-add-btn');
+                if (listEl) {
+                    listEl.onclick = e => {
+                        const row = e.target.closest('.prog-editor-item');
+                        if (!row) return;
+                        const idx = parseInt(row.dataset.progIdx);
+                        if (e.target.classList.contains('prog-rm')) {
+                            collectDOMtoItems();
+                            editItems.splice(idx, 1);
+                            if (editItems.length === 0) editItems.push({ emoji: '⭐', time: '', title: '' });
+                            refreshList();
+                            renderProgram(editItems);
+                        } else if (e.target.classList.contains('prog-up') && !e.target.disabled && idx > 0) {
+                            collectDOMtoItems();
+                            [editItems[idx - 1], editItems[idx]] = [editItems[idx], editItems[idx - 1]];
+                            refreshList();
+                            renderProgram(editItems);
+                            document.querySelector(`[data-prog-idx="${idx - 1}"]`)?.scrollIntoView({ block: 'nearest' });
+                        } else if (e.target.classList.contains('prog-dn') && !e.target.disabled && idx < editItems.length - 1) {
+                            collectDOMtoItems();
+                            [editItems[idx + 1], editItems[idx]] = [editItems[idx], editItems[idx + 1]];
+                            refreshList();
+                            renderProgram(editItems);
+                            document.querySelector(`[data-prog-idx="${idx + 1}"]`)?.scrollIntoView({ block: 'nearest' });
+                        }
+                    };
+                }
+                if (addBtn) {
+                    addBtn.onclick = () => {
+                        collectDOMtoItems();
+                        editItems.push({ emoji: '⭐', time: '', title: '' });
+                        refreshList();
+                        document.getElementById('prog-editor-list')?.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    };
+                }
+            }
+
             const body = `<div class="prog-editor-list" id="prog-editor-list">${buildList(editItems)}</div>
                 <button class="prog-add-btn" id="prog-add-btn" type="button">＋ Přidat položku programu</button>`;
 
             openModal('📋 Editovat program', body, () => {
-                // Collect values from DOM
-                const list = document.getElementById('prog-editor-list');
-                const rows = list.querySelectorAll('.prog-editor-item');
-                programItems = Array.from(rows).map(row => {
-                    const i = parseInt(row.dataset.progIdx);
-                    const emoji = document.getElementById(`ep-trigger-prog${i}`)?.textContent || editItems[i]?.emoji || '⭐';
-                    return {
-                        emoji,
-                        time:  row.querySelector('.prog-time').value.trim(),
-                        title: row.querySelector('.prog-title').value.trim(),
-                        note:  row.querySelector('.prog-note').value.trim() || undefined
-                    };
-                }).filter(it => it.title);
+                collectDOMtoItems();
+                programItems = editItems.filter(it => it.title);
                 renderProgram(programItems);
             });
 
-            // Attach emoji pickers
-            editItems.forEach((item, i) => attachEmojiPicker('ep-trigger-prog'+i, 'ep-popup-prog'+i, null));
-
-            // Remove buttons
-            document.getElementById('prog-editor-list').addEventListener('click', e => {
-                if (e.target.classList.contains('prog-rm')) {
-                    const row = e.target.closest('.prog-editor-item');
-                    const idx = parseInt(row.dataset.progIdx);
-                    editItems.splice(idx, 1);
-                    document.getElementById('prog-editor-list').innerHTML = buildList(editItems);
-                    editItems.forEach((item, i) => attachEmojiPicker('ep-trigger-prog'+i, 'ep-popup-prog'+i, null));
-                    rewireProgAddBtn(editItems, buildList);
-                }
-            });
-
-            rewireProgAddBtn(editItems, buildList);
-        }
-
-        function rewireProgAddBtn(editItems, buildList) {
-            const btn = document.getElementById('prog-add-btn');
-            if (!btn) return;
-            btn.onclick = () => {
-                editItems.push({ emoji: '⭐', time: '', title: '' });
-                document.getElementById('prog-editor-list').innerHTML = buildList(editItems);
-                editItems.forEach((item, i) => attachEmojiPicker('ep-trigger-prog'+i, 'ep-popup-prog'+i, null));
-                rewireProgAddBtn(editItems, buildList);
-                // Scroll to new item
-                const list = document.getElementById('prog-editor-list');
-                list.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            };
+            attachAllEmojis();
+            wireProgActions();
         }
 
         // --- SEATING EDITOR ---
@@ -1088,8 +1187,8 @@
                 });
             });
 
-            // Add / remove seat buttons
-            body.addEventListener('click', e => {
+            // Add / remove seat buttons – use onclick to prevent handler accumulation on each re-wire call
+            body.onclick = e => {
                 if (e.target.classList.contains('sn-rm')) {
                     collectSeatingInputs(editState);
                     const row   = e.target.closest('.sn-row');
@@ -1157,6 +1256,41 @@
                 if (!seatingState.names) seatingState.names = JSON.parse(JSON.stringify(defaultSeating));
             }
             renderSeating(seatingState);
+
+            // Drag-to-scroll seating chart (desktop)
+            const seatingScroll = document.getElementById('seating-scroll');
+            if (seatingScroll) {
+                let isDragging = false, startX, scrollLeft;
+                seatingScroll.addEventListener('mousedown', e => {
+                    isDragging = true;
+                    startX = e.pageX - seatingScroll.offsetLeft;
+                    scrollLeft = seatingScroll.scrollLeft;
+                    seatingScroll.classList.add('is-dragging');
+                });
+                seatingScroll.addEventListener('mouseleave', () => { isDragging = false; seatingScroll.classList.remove('is-dragging'); });
+                seatingScroll.addEventListener('mouseup', () => { isDragging = false; seatingScroll.classList.remove('is-dragging'); });
+                seatingScroll.addEventListener('mousemove', e => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    const x = e.pageX - seatingScroll.offsetLeft;
+                    seatingScroll.scrollLeft = scrollLeft - (x - startX);
+                });
+            }
+
+            // Seating name search
+            document.getElementById('seating-search')?.addEventListener('input', e => {
+                const q = e.target.value.trim().toLowerCase();
+                let firstMatch = null;
+                document.querySelectorAll('#seating-chart .chair').forEach(chair => {
+                    if (q && chair.textContent.toLowerCase().includes(q)) {
+                        chair.classList.add('highlighted');
+                        if (!firstMatch) firstMatch = chair;
+                    } else {
+                        chair.classList.remove('highlighted');
+                    }
+                });
+                if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            });
 
             // Cloudinary
             initCloudinary(
