@@ -1022,7 +1022,8 @@
             if (dtInput && dtInput.value) {
                 const weddingDateEl = document.querySelector('[data-field="weddingDate"]');
                 if (weddingDateEl) {
-                    weddingDateEl.textContent = dtInput.value;
+                    // Store with space instead of 'T' so new Date() parses it as local time
+                    weddingDateEl.textContent = dtInput.value.replace('T', ' ') + ':00';
                 }
                 startCountdown();
             }
