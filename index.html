@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Svatba | Adéla & Jakub 2026 💍</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Cloudinary Upload Widget -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+
+    <!-- Fancybox CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+
+    <style>
+        :root {
+            --primary: #d4a373; --secondary: #e9edc9; --bg-color: #fefae0;
+            --text-dark: #333d29; --text-light: #fefae0; --card-bg: rgba(255, 255, 255, 0.85);
+            --radius-lg: 30px; --radius-sm: 15px; --shadow: 0 12px 40px rgba(0, 0, 0, 0.06); --table-color: #4a5d3f;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--text-dark); line-height: 1.8; overflow-x: hidden; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; text-align: center; }
+        nav {
+            position: fixed; top: 0; width: 100%; background: rgba(254, 250, 224, 0.95); backdrop-filter: blur(10px);
+            z-index: 1000; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow);
+        }
+        .nav-brand { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .menu-toggle { display: none; font-size: 1.8rem; cursor: pointer; color: var(--text-dark); }
+        nav ul { list-style: none; display: flex; gap: 20px; align-items: center; transition: 0.3s ease-in-out; }
+        nav a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 0.95rem; padding: 8px 15px; border-radius: 20px; transition: 0.3s; }
+        nav a:hover, nav a.active { background: var(--primary); color: white; }
+        @media (max-width: 900px) {
+            .menu-toggle { display: block; }
+            nav ul { position: absolute; top: 100%; left: 0; width: 100%; background: rgba(254, 250, 224, 0.98); flex-direction: column; padding: 0; max-height: 0; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+            nav ul.open { padding: 20px 0; max-height: 500px; }
+            nav ul li { width: 100%; text-align: center; margin-bottom: 10px; }
+            nav a { display: inline-block; width: 80%; padding: 12px; }
+        }
+        section { padding: 100px 20px 60px; max-width: 1100px; margin: 0 auto; }
+        .section-title { font-size: 2.8rem; margin-bottom: 40px; color: var(--primary); }
+        .hero {
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            background: linear-gradient(rgba(254, 250, 224, 0.75), rgba(233, 237, 201, 0.9)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80') center/cover;
+            border-bottom-left-radius: 60px; border-bottom-right-radius: 60px; padding: 160px 20px 60px;
+        }
+        .hero h1 { font-size: 4rem; margin-bottom: 15px; color: var(--text-dark); }
+        .hero p.subtitle { font-size: 1.4rem; font-weight: 600; margin-bottom: 20px; color: var(--primary); }
+        .hero-ctas { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; justify-content: center; }
+        .btn { display: inline-block; background: var(--primary); color: white; padding: 15px 35px; border-radius: 50px; text-decoration: none; font-weight: 600; border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; font-family: inherit; font-size: 1rem; }
+        .btn:hover { transform: translateY(-5px); box-shadow: 0 15px 25px rgba(212, 163, 115, 0.4); }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-outline:hover { background: var(--primary); color: white; }
+        .card { background: var(--card-bg); padding: 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow); margin-bottom: 30px; text-align: center; backdrop-filter: blur(5px); }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .info-card { background: var(--card-bg); padding: 40px 30px; border-radius: var(--radius-lg); box-shadow: var(--shadow); text-align: center; border-top: 5px solid var(--primary); }
+        .info-card .icon { font-size: 3rem; margin-bottom: 15px; }
+        .seating-scroll-wrapper { width: 100%; overflow-x: auto; padding: 80px 40px; background: var(--card-bg); border-radius: var(--radius-lg); box-shadow: var(--shadow); border: 2px dashed var(--primary); }
+        .seating-layout { display: flex; flex-direction: column; align-items: center; gap: 40px; width: 1200px; margin: 0 auto; }
+        .table-surface { background-color: var(--table-color); border-radius: 12px; box-shadow: inset 0 0 15px rgba(0,0,0,0.4), 0 10px 20px rgba(0,0,0,0.1); }
+        .head-table-group { display: flex; flex-direction: column; width: 100%; gap: 15px; }
+        .head-table-surface { width: 100%; height: 55px; }
+        .row-chairs { display: flex; justify-content: space-between; width: 100%; }
+        .branches-group { display: flex; justify-content: space-between; width: 100%; }
+        .vertical-table-group { display: flex; gap: 15px; align-items: flex-start; justify-content: center; }
+        .vertical-table-surface { width: 55px; height: 100%; min-height: 400px; }
+        .col-chairs { display: flex; flex-direction: column; gap: 15px; justify-content: flex-start; }
+        .chair { padding: 8px 15px; background: white; border: 2px solid var(--primary); border-radius: 20px; display: flex; justify-content: center; align-items: center; font-size: 0.85rem; font-weight: 600; color: var(--text-dark); box-shadow: 0 4px 10px rgba(0,0,0,0.05); white-space: nowrap; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; margin-top: 30px; }
+        .gallery-grid a { display: block; border-radius: var(--radius-sm); overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 1 / 1; }
+        .gallery-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; display: block; }
+        .gallery-grid a:hover img { transform: scale(1.15); }
+        .fab-btn { position: fixed; bottom: 30px; right: 30px; width: 70px; height: 70px; background: var(--primary); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 12px 30px rgba(212, 163, 115, 0.6); border: none; cursor: pointer; z-index: 999; transition: transform 0.3s; }
+        .fab-btn:hover { transform: scale(1.15) rotate(10deg); }
+        .map-container { border-radius: var(--radius-lg); overflow: hidden; margin-top: 20px; }
+        iframe { width: 100%; height: 350px; border: none; }
+
+        /* --- ROUTE GRAPHIC --- */
+        .route-visual { position: relative; padding: 40px 20px; margin: 30px 0; }
+        .route-line { position: absolute; top: 50%; left: 10%; right: 10%; height: 4px; background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 50%, #8fbc8f 100%); transform: translateY(-50%); z-index: 0; }
+        .route-line::after { content: ''; position: absolute; top: 50%; right: -2px; transform: translateY(-50%); width: 0; height: 0; border-left: 12px solid #8fbc8f; border-top: 8px solid transparent; border-bottom: 8px solid transparent; }
+        .route-points { display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
+        .route-point { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .route-icon { width: 70px; height: 70px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; box-shadow: 0 8px 25px rgba(0,0,0,0.12); border: 3px solid white; }
+        .route-icon.start { background: linear-gradient(135deg, #f6d365, var(--primary)); }
+        .route-icon.end { background: linear-gradient(135deg, #a8e6cf, #88d8a8); }
+        .route-label { font-weight: 600; font-size: 0.9rem; text-align: center; max-width: 120px; }
+        .route-car { position: absolute; top: 50%; left: 10%; transform: translate(-50%, -50%); font-size: 1.8rem; z-index: 2; animation: driveCar 4s ease-in-out infinite; }
+        @keyframes driveCar { 0% { left: 12%; } 50% { left: 85%; } 100% { left: 12%; } }
+        .route-info { display: flex; justify-content: center; gap: 30px; margin-top: 15px; flex-wrap: wrap; }
+        .route-info span { font-size: 0.95rem; color: var(--text-dark); opacity: 0.8; }
+
+        /* --- PROGRAM TIMELINE --- */
+        .timeline { position: relative; max-width: 700px; margin: 0 auto; padding: 20px 0; }
+        .timeline::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, var(--primary), var(--secondary)); border-radius: 3px; }
+        .timeline-item { display: flex; align-items: center; margin-bottom: 35px; position: relative; }
+        .timeline-item:nth-child(odd) { flex-direction: row-reverse; }
+        .timeline-content { width: 42%; padding: 20px 25px; background: var(--card-bg); border-radius: var(--radius-sm); box-shadow: var(--shadow); text-align: center; }
+        .timeline-item:nth-child(even) .timeline-content { margin-left: auto; }
+        .timeline-item:nth-child(odd) .timeline-content { margin-right: auto; }
+        .timeline-dot { position: absolute; left: 50%; transform: translateX(-50%); width: 44px; height: 44px; background: var(--primary); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; z-index: 1; border: 3px solid var(--bg-color); box-shadow: 0 4px 12px rgba(212, 163, 115, 0.4); }
+        .timeline-time { font-weight: 700; color: var(--primary); font-size: 1.1rem; margin-bottom: 5px; }
+        .timeline-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 5px; }
+        @media (max-width: 600px) {
+            .timeline::before { left: 25px; }
+            .timeline-item, .timeline-item:nth-child(odd) { flex-direction: row; padding-left: 60px; }
+            .timeline-content { width: 100% !important; margin: 0 !important; }
+            .timeline-dot { left: 25px; }
+        }
+
+        /* --- GALLERY CTA FLOATING --- */
+        .gallery-fab { position: fixed; bottom: 110px; right: 30px; width: auto; padding: 12px 22px; background: var(--primary); color: white; border-radius: 50px; display: flex; justify-content: center; align-items: center; font-size: 0.9rem; font-weight: 600; box-shadow: 0 12px 30px rgba(212, 163, 115, 0.6); border: none; cursor: pointer; z-index: 999; transition: transform 0.3s; text-decoration: none; gap: 8px; font-family: 'Poppins', sans-serif; }
+        .gallery-fab:hover { transform: scale(1.08); color: white; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#hero" class="nav-brand" style="text-decoration:none;">A & J</a>
+        <div class="menu-toggle" id="mobile-menu">☰</div>
+        <ul id="nav-ul">
+            <li><a href="#hero">Domů</a></li>
+            <li><a href="#sraz">Sraz</a></li>
+            <li><a href="#program">Program</a></li>
+            <li><a href="#zasedaci-poradek">Kde sedím</a></li>
+            <li><a href="#galerie">Galerie</a></li>
+        </ul>
+    </nav>
+
+    <section id="hero" class="hero">
+        <h1>Adéla & Jakub</h1>
+        <p class="subtitle">Budeme se brát! 💍</p>
+        <p style="font-size: 1.1rem; margin-bottom: 8px; color: var(--text-dark);">Sobota <strong>25. dubna 2026</strong> · Penzion Fojtství - Svatý Kopeček v Olomouci</p>
+        <p style="font-size: 1rem; color: var(--text-dark); opacity: 0.85; max-width: 520px; margin-bottom: 20px;">
+            Jsme nadšeni, že vás můžeme pozvat na jeden z nejkrásnějších dnů v našem životě.
+            Těšíme se na každého z vás a věříme, že společně vytvoříme nezapomenutelné vzpomínky.
+        </p>
+        <div class="card" style="padding: 15px 40px; border-radius: 50px; display: inline-block;">
+            <h3 id="countdown" style="margin:0; color: var(--primary);">Počítáme...</h3>
+        </div>
+        <p style="font-size: 0.95rem; color: var(--text-dark); opacity: 0.7; margin-top: 10px;">do zahájení obřadu</p>
+        <div class="hero-ctas">
+            <a href="#program" class="btn btn-outline">Zobrazit program 📋</a>
+            <button class="btn upload_trigger">Nahrát fotku 📸</button>
+        </div>
+    </section>
+
+    <!-- 1. SEKCE: SVATEBNÍ SRAZ -->
+    <section id="sraz">
+        <h2 class="section-title">Svatební sraz 🚗</h2>
+        <div class="card">
+            <h3 style="font-size: 1.8rem; margin-bottom: 10px;">Sraz: <strong>Globus Olomouc u ASKO NÁBYTEK</strong></h3>
+            <p style="font-size: 1.2rem;">Sejdeme se v sobotu <strong>25. dubna 2026</strong> ve <span style="font-size: 2rem; font-weight: 700; color: var(--primary);">⏰ 11:30</span></p>
+            <p>Odtud společně vyrazíme na <strong>Svatý Kopeček v Olomouci</strong>, kde proběhne obřad. 🎉</p>
+
+            <!-- Interaktivní grafika trasy -->
+            <div class="route-visual">
+                <div class="route-line"></div>
+                <div class="route-car">🚗</div>
+                <div class="route-points">
+                    <div class="route-point">
+                        <div class="route-icon start">🛒</div>
+                        <span class="route-label">Globus Olomouc</span>
+                    </div>
+                    <div class="route-point">
+                        <div class="route-icon end">⛪</div>
+                        <span class="route-label">Svatý Kopeček</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 1.3rem; margin-top: 30px; margin-bottom: 10px;">📍 Místo srazu – <strong>Globus Olomouc u ASKO NÁBYTEK</strong></h3>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2585.799276911016!2d17.22050497681161!3d49.601534548122665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47124f03c6fed89b%3A0x775332b8f7b9562b!2sGlobus%20Hypermarket!5e0!3m2!1scs!2scz!4v1775982606762!5m2!1scs!2scz" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <a href="https://maps.app.goo.gl/dfqZEPGRZnEfUd8XA" target="_blank" class="btn" style="margin-top: 20px;">Navigovat</a>
+
+            <h3 style="font-size: 1.3rem; margin-top: 30px; margin-bottom: 10px;">⛪ Cíl – Penzion Fojtství</h3>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2584.34838055933!2d17.341055476812826!3d49.628888246176274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47124b8dff71466d%3A0xa5c218c03eac1012!2sPenzion%20Fojtstv%C3%AD!5e0!3m2!1scs!2scz!4v1775982817995!5m2!1scs!2scz" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <a href="https://maps.app.goo.gl/Tk74LcE7NQ7GXB5D9" target="_blank" class="btn" style="margin-top: 20px;">Navigovat</a>
+        </div>
+    </section>
+
+    <!-- 2. SEKCE: SVATEBNÍ PROGRAM -->
+    <section id="program">
+        <h2 class="section-title">Svatební program 📋</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-time">11:30</div>
+                    <div class="timeline-title">Sraz – Globus Olomouc</div>
+                </div>
+                <div class="timeline-dot">🚗</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-time">13:00</div>
+                    <div class="timeline-title">Svatební obřad</div>
+                </div>
+                <div class="timeline-dot">⛪</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-time">14:00</div>
+                    <div class="timeline-title">Svatební hostina</div>
+                </div>
+                <div class="timeline-dot">🍽️</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-time">15:00</div>
+                    <div class="timeline-title">Krájení dortu</div>
+                </div>
+                <div class="timeline-dot">🎂</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-time">15:00</div>
+                    <div class="timeline-title">Příjezd DJ – kytara & zábava až do 21:00</div>
+                </div>
+                <div class="timeline-dot">🎸</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-time">16:00</div>
+                    <div class="timeline-title">Stříhání dámské i pánské kytice</div>
+                </div>
+                <div class="timeline-dot">💐</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-time">16:30</div>
+                    <div class="timeline-title">Otevření alko baru & raut v salonku</div>
+                </div>
+                <div class="timeline-dot">🍸</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-time">17:30</div>
+                    <div class="timeline-title">Hry & tombola</div>
+                    <p style="font-size:0.85rem;margin-top:5px;opacity:0.85;">Vezměte si s sebou <b>drobné</b> na tombolu! 🎉</p>
+                </div>
+                <div class="timeline-dot">🎲</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-time">19:00</div>
+                    <div class="timeline-title">První tanec</div>
+                </div>
+                <div class="timeline-dot">💃</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-time">19:30</div>
+                    <div class="timeline-title">Večerní zábava</div>
+                </div>
+                <div class="timeline-dot">🎶</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEKCE: ZASEDACÍ POŘÁDEK -->
+    <section id="zasedaci-poradek">
+        <h2 class="section-title">Zasedací pořádek 🪑</h2>
+        <p style="text-align: center; margin-bottom: 30px;">Najděte si své místo u stolu. <br><em>(Můžete posouvat prstem do stran)</em></p>
+        <div class="seating-scroll-wrapper">
+            <div class="seating-layout" id="seating-chart"></div>
+        </div>
+    </section>
+
+    <!-- 4. SEKCE: FOTOGALERIE -->
+    <section id="galerie">
+        <h2 class="section-title">Fotogalerie 📸</h2>
+        <div class="card" style="text-align: center; margin-bottom: 30px;">
+            <h3 style="margin-bottom: 15px;">Vyfoťte momentku!</h3>
+            <p>Vyfoťte momentku a rovnou ji nahrajte. Zobrazí se všem v reálném čase.</p>
+            <button class="btn upload_trigger">Nahrát nové fotky ⬆️</button>
+        </div>
+        <div class="gallery-grid" id="photo-gallery">
+            <p class="loader-msg">Načítám vzpomínky z cloudu... ☁️</p>
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding: 60px 20px; color: var(--primary); font-family: 'Playfair Display', serif;">
+        <h2>Těšíme se na vás!</h2>
+        <p style="font-size: 1.5rem;">❤️ Adéla & Jakub</p>
+    </footer>
+
+    <a href="#galerie" class="gallery-fab">🖼️ Galerie</a>
+    <button class="fab-btn upload_trigger" title="Nahrát fotku">📸</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+        // ==================================================================================
+        // ⚠️ KROK 1: VYPLŇTE SVÉ ÚDAJE Z FIREBASE A CLOUDINARY ⚠️
+        // ==================================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCo0es_wKZCiBI4uSuTx_0WQINafdBlW-o",
+            authDomain: "svtbj-83ed7.firebaseapp.com",
+            databaseURL: "https://svtbj-83ed7-default-rtdb.europe-west1.firebasedatabase.app/", // Velmi důležité u Realtime DB
+            projectId: "svtbj-83ed7",
+            storageBucket: "svtbj-83ed7.firebasestorage.app",
+            messagingSenderId: "111788837805",
+            appId: "1:111788837805:web:d57d6b2e3658bfa3cb2f24"
+            };
+        const CLOUDINARY_CLOUD_NAME = "drrzl7evt"; 
+        const CLOUDINARY_UPLOAD_PRESET = "svatbuj";
+        // ==================================================================================
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const photosRef = ref(db, 'svatba_galerie');
+
+        /* --- MOBILNÍ MENU --- */
+        document.getElementById('mobile-menu').addEventListener('click', () => document.getElementById('nav-ul').classList.toggle('open'));
+        document.querySelectorAll('#nav-ul a').forEach(link => link.addEventListener('click', () => document.getElementById('nav-ul').classList.remove('open')));
+
+        /* --- ZASEDACÍ POŘÁDEK (40 MÍST) --- */
+        const topTable = ["SESTRA NEV.", "NATÁLKA", "MÁMA NEV.", "TÁTA NEV.", "NEVĚSTA", "ŽENICH", "TÁTA ŽEN.", "MÁMA ŽEN.", "BRATR"];
+        const branch1_left = ["SÁRA", "MICHAL", "LOLA", "MAGDIČKA", "JAKUB"], branch1_right = ["MILAN", "MARIE", "LUCINKA", "ZUZANA"];
+        const branch2_left = ["ALICE", "SVĚDKYNĚ NEV.", "MARTIN", "VOJTĚCH", "MONIKA"], branch2_right = ["BABIČKA MARIE", "PETR", "PETRA", "KAROLÍNA", "PATRIK"];
+        const branch3_left = ["BABIČKA BOŽENA", "ROMAN", "JANA", "ONDŘEJ", "JAN"], branch3_right = ["LENKA", "PETR", "SVĚDEK ŽEN.", "DANIELA", "VOJTĚCH"];
+        const createChairs = (arr) => arr.map(name => `<div class="chair">${name}</div>`).join('');
+        document.getElementById("seating-chart").innerHTML = `
+            <div class="head-table-group"><div class="row-chairs">${createChairs(topTable)}</div><div class="table-surface head-table-surface"></div></div>
+            <div class="branches-group">
+                <div class="vertical-table-group"><div class="col-chairs">${createChairs(branch1_left)}</div><div class="table-surface vertical-table-surface"></div><div class="col-chairs">${createChairs(branch1_right)}</div></div>
+                <div class="vertical-table-group"><div class="col-chairs">${createChairs(branch2_left)}</div><div class="table-surface vertical-table-surface"></div><div class="col-chairs">${createChairs(branch2_right)}</div></div>
+                <div class="vertical-table-group"><div class="col-chairs">${createChairs(branch3_left)}</div><div class="table-surface vertical-table-surface"></div><div class="col-chairs">${createChairs(branch3_right)}</div></div>
+            </div>`;
+
+        /* --- FOTOGALERIE A REÁLNÝ ČAS --- */
+        Fancybox.bind('[data-fancybox="gallery"]', { Toolbar: { display: { left: ["infobar"], middle: ["zoomIn", "zoomOut", "slideshow"], right: ["download", "close"] } } });
+        const galleryEl = document.getElementById('photo-gallery');
+
+        onValue(photosRef, (snapshot) => {
+            galleryEl.innerHTML = ''; 
+            if (!snapshot.exists()) return galleryEl.innerHTML = '<p class="loader-msg">Zatím tu nejsou žádné fotky. Buďte první!</p>';
+            
+            const photosArray = []; 
+            snapshot.forEach(child => {
+                photosArray.push(child.val());
+            });
+
+            photosArray.sort((a, b) => b.timestamp - a.timestamp);
+
+            photosArray.forEach(p => {
+                const thumbUrl = p.url.replace('/upload/', '/upload/c_fill,h_400,w_400/');
+                const anchor = document.createElement('a');
+                anchor.href = p.url;
+                anchor.dataset.fancybox = "gallery";
+                const img = document.createElement('img');
+                img.src = thumbUrl;
+                img.loading = "lazy";
+                anchor.appendChild(img);
+                galleryEl.appendChild(anchor);
+            });
+        });
+        
+        const myWidget = cloudinary.createUploadWidget({ 
+            cloudName: CLOUDINARY_CLOUD_NAME, 
+            uploadPreset: CLOUDINARY_UPLOAD_PRESET, 
+            sources: ['local', 'camera'], 
+            language: "cs",
+            multiple: true
+        }, (err, res) => { 
+            if (!err && res && res.event === "success") {
+                push(photosRef, { 
+                    url: res.info.secure_url,
+                    timestamp: Date.now() 
+                }); 
+            }
+        });
+
+        document.querySelectorAll('.upload_trigger').forEach(btn => btn.addEventListener('click', () => myWidget.open()));
+
+        /* --- ODPOČET --- */
+        const weddingDate = new Date("Apr 25, 2026 13:00:00").getTime();
+        setInterval(() => {
+            const dist = weddingDate - new Date().getTime();
+            if(dist < 0) return document.getElementById("countdown").innerHTML = "Užíváme si to! 🎉";
+            const days = Math.floor(dist/(1000*60*60*24));
+            const hours = Math.floor((dist%(1000*60*60*24))/(1000*60*60));
+            document.getElementById("countdown").innerHTML = `${days} dní ${hours} hodin`;
+        }, 1000);
+
+    </script>
+</body>
+</html>
