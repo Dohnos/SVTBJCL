@@ -531,12 +531,19 @@
         // ==================================================================================
         // HERO BACKGROUND
         // ==================================================================================
+        function isSafeImageUrl(url) {
+            try {
+                const u = new URL(url);
+                return ['http:', 'https:'].includes(u.protocol);
+            } catch { return false; }
+        }
+
         function applyHeroBackground(imageUrl, overlayOpacity) {
             const hero = document.querySelector('section#hero.hero');
             if (!hero) return;
             const op1 = parseFloat(overlayOpacity) || DEFAULT_HERO_OVERLAY;
             const op2 = Math.min(op1 + 0.15, 1);
-            const url = imageUrl || DEFAULT_HERO_IMAGE;
+            const url = isSafeImageUrl(imageUrl) ? imageUrl.replace(/'/g, '%27') : DEFAULT_HERO_IMAGE;
             hero.style.background = `linear-gradient(rgba(254,250,224,${op1}),rgba(233,237,201,${op2})),url('${url}') center/cover`;
         }
 
@@ -758,6 +765,11 @@
         // ==================================================================================
         const EMOJIS = ['🚗','⛪','🍽️','🎂','🎸','💐','🍸','🎲','💃','🎶','💍','🎉','🥂','📸','🌹','💒','🎊','🎵','🥳','🎤','🌟','⭐','🌺','🌸','🎻','🎼','💫','🎁','🎀','🍾','🍰','🎈','🕺','👰','🤵','💌','🌈','🎭','🏆','⏰','🧁','🔔','🎯','🌻','🌼','🎪','🪅','✨','🌙'];
 
+        // Single global listener to close emoji popups when clicking outside
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.emoji-popup.open').forEach(p => p.classList.remove('open'));
+        });
+
         function openModal(title, bodyHtml, onApply) {
             document.getElementById('modal-title').textContent = title;
             document.getElementById('modal-body').innerHTML = bodyHtml;
@@ -796,7 +808,6 @@
                     if (onChange) onChange(btn.textContent);
                 });
             });
-            document.addEventListener('click', () => popup.classList.remove('open'), { once: false });
         }
 
         function emojiPickerHtml(id, currentEmoji) {
