@@ -22,7 +22,7 @@
             --nav-bg: rgba(254,250,224,0.95); --body-font: 'Poppins',sans-serif; --info-bar-h: 0px;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-        body { font-family: var(--body-font); background-color: var(--bg-color); color: var(--text-dark); line-height: 1.8; overflow-x: hidden; }
+        body { font-family: var(--body-font); font-size: var(--body-font-size, 16px); background-color: var(--bg-color); color: var(--text-dark); line-height: 1.8; overflow-x: hidden; }
         h1, h2, h3 { font-family: 'Playfair Display', serif; text-align: center; }
         nav {
             position: fixed; top: var(--info-bar-h, 0px); width: 100%; background: var(--nav-bg); backdrop-filter: blur(10px);
@@ -854,7 +854,7 @@
             const textEl = document.getElementById('info-bar-text');
             if (!bar) return;
             if (infoBarData.enabled) {
-                if (textEl) textEl.innerHTML = sanitizeHTML(infoBarData.text || '');
+                if (textEl) textEl.textContent = infoBarData.text || '';
                 bar.style.background  = infoBarData.bgColor    || '#d4a373';
                 bar.style.color       = infoBarData.textColor  || '#ffffff';
                 bar.style.fontSize    = (infoBarData.fontSize  || 15) + 'px';
