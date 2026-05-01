@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Svatba | Adéla & Jakub 2026 💍</title>
+    <title>Ilustrace | Tereza & Martin 2026 💍</title>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -230,6 +230,27 @@
         .prog-mv:hover:not([disabled]) { background: var(--primary); color: white; border-color: var(--primary); }
         .prog-mv[disabled] { opacity: 0.28; cursor: default; }
 
+        /* --- LOADING MODAL --- */
+        #loading-modal {
+            position: fixed; inset: 0; background: var(--bg-color); z-index: 99999;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        #loading-modal.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .loading-content { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+        .loading-rings { position: relative; width: 84px; height: 84px; display: flex; align-items: center; justify-content: center; }
+        .loading-ring { position: absolute; inset: 0; border-radius: 50%; border: 4px solid transparent; border-top-color: var(--primary); animation: loadingSpin 1s linear infinite; }
+        .loading-ring-inner { font-size: 2.4rem; animation: loadingPulse 1.4s ease-in-out infinite; }
+        @keyframes loadingSpin { to { transform: rotate(360deg); } }
+        @keyframes loadingPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+        .loading-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--primary); font-weight: 500; margin: 0; }
+        .loading-subtitle { font-size: 0.9rem; color: var(--text-dark); opacity: 0.55; margin: 0; }
+        .loading-dots { display: flex; gap: 8px; }
+        .loading-dots span { width: 9px; height: 9px; border-radius: 50%; background: var(--primary); animation: loadingDot 1.2s ease-in-out infinite; }
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes loadingDot { 0%, 80%, 100% { transform: scale(0.55); opacity: 0.35; } 40% { transform: scale(1); opacity: 1; } }
+
         /* --- PRINT STYLES --- */
         @media print {
             nav, .fab-btn, .gallery-fab, #edit-toolbar, .section-edit-overlay, footer,
@@ -243,7 +264,7 @@
 </head>
 <body>
     <nav>
-        <a href="#hero" class="nav-brand" style="text-decoration:none;" data-field="navBrand">A & J</a>
+        <a href="#hero" class="nav-brand" style="text-decoration:none;" data-field="navBrand">T & M</a>
         <div class="menu-toggle" id="mobile-menu">☰</div>
         <ul id="nav-ul">
             <li><a href="#hero">Domů</a></li>
@@ -255,9 +276,9 @@
     </nav>
 
     <section id="hero" class="hero">
-        <h1 data-field="heroTitle">Adéla & Jakub</h1>
+        <h1 data-field="heroTitle">Tereza & Martin</h1>
         <p class="subtitle" data-field="heroSubtitle">Budeme se brát! 💍</p>
-        <p style="font-size: 1.1rem; margin-bottom: 8px; color: var(--text-dark);" data-field="heroDate">Sobota <strong>25. dubna 2026</strong> · Penzion Fojtství - Svatý Kopeček v Olomouci</p>
+        <p style="font-size: 1.1rem; margin-bottom: 8px; color: var(--text-dark);" data-field="heroDate">Sobota <strong>12. září 2026</strong> · Zámecký areál Krásná Vyhlídka</p>
         <p style="font-size: 1rem; color: var(--text-dark); opacity: 0.85; max-width: 520px; margin-bottom: 20px;" data-field="heroText">
             Jsme nadšeni, že vás můžeme pozvat na jeden z nejkrásnějších dnů v našem životě.
             Těšíme se na každého z vás a věříme, že společně vytvoříme nezapomenutelné vzpomínky.
@@ -275,7 +296,7 @@
         </div>
         <p style="font-size: 0.95rem; color: var(--text-dark); opacity: 0.7; margin-top: 10px;" data-field="countdownLabel">do zahájení obřadu</p>
         <!-- hidden field for countdown target date -->
-        <span data-field="weddingDate" style="display:none">Apr 25, 2026 13:00:00</span>
+        <span data-field="weddingDate" style="display:none">Sep 12, 2026 14:00:00</span>
         <div class="hero-ctas">
             <a href="#program" class="btn btn-outline">Zobrazit program 📋</a>
             <button class="btn upload_trigger">Nahrát fotku 📸</button>
@@ -289,9 +310,9 @@
     <section id="sraz">
         <h2 class="section-title" data-field="srazSectionTitle">Svatební sraz 🚗</h2>
         <div class="card">
-            <h3 style="font-size: 1.8rem; margin-bottom: 10px;" data-field="srazHeading">Sraz: <strong>Globus Olomouc u ASKO NÁBYTEK</strong></h3>
-            <p style="font-size: 1.2rem;" data-field="srazDate">Sejdeme se v sobotu <strong>25. dubna 2026</strong> ve <span style="font-size: 2rem; font-weight: 700; color: var(--primary);">⏰ 11:30</span></p>
-            <p data-field="srazDesc">Odtud společně vyrazíme na <strong>Svatý Kopeček v Olomouci</strong>, kde proběhne obřad. 🎉</p>
+            <h3 style="font-size: 1.8rem; margin-bottom: 10px;" data-field="srazHeading">Sraz: <strong>Parkoviště u OC Olympia</strong></h3>
+            <p style="font-size: 1.2rem;" data-field="srazDate">Sejdeme se v sobotu <strong>12. září 2026</strong> ve <span style="font-size: 2rem; font-weight: 700; color: var(--primary);">⏰ 12:00</span></p>
+            <p data-field="srazDesc">Odtud společně vyrazíme na <strong>Zámecký areál Krásná Vyhlídka</strong>, kde proběhne obřad. 🎉</p>
 
             <!-- Interaktivní grafika trasy -->
             <div class="route-visual">
@@ -299,23 +320,23 @@
                 <div class="route-car">🚗</div>
                 <div class="route-points">
                     <div class="route-point">
-                        <div class="route-icon start" data-field="routeStartIcon">🛒</div>
-                        <span class="route-label" data-field="routeStartLabel">Globus Olomouc</span>
+                        <div class="route-icon start" data-field="routeStartIcon">🅿️</div>
+                        <span class="route-label" data-field="routeStartLabel">OC Olympia</span>
                     </div>
                     <div class="route-point">
-                        <div class="route-icon end" data-field="routeEndIcon">⛪</div>
-                        <span class="route-label" data-field="routeEndLabel">Svatý Kopeček</span>
+                        <div class="route-icon end" data-field="routeEndIcon">🏰</div>
+                        <span class="route-label" data-field="routeEndLabel">Zámecký areál</span>
                     </div>
                 </div>
             </div>
 
-            <h3 style="font-size: 1.3rem; margin-top: 30px; margin-bottom: 10px;" data-field="srazMapLabel1">📍 Místo srazu – <strong>Globus Olomouc u ASKO NÁBYTEK</strong></h3>
+            <h3 style="font-size: 1.3rem; margin-top: 30px; margin-bottom: 10px;" data-field="srazMapLabel1">📍 Místo srazu – <strong>Parkoviště u OC Olympia</strong></h3>
             <div class="map-container" id="sraz-map1-container">
                 <iframe id="sraz-map1" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2585.799276911016!2d17.22050497681161!3d49.601534548122665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47124f03c6fed89b%3A0x775332b8f7b9562b!2sGlobus%20Hypermarket!5e0!3m2!1scs!2scz!4v1775982606762!5m2!1scs!2scz" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <a id="sraz-nav1" href="https://maps.app.goo.gl/dfqZEPGRZnEfUd8XA" target="_blank" class="btn" style="margin-top: 20px;">Navigovat</a>
 
-            <h3 style="font-size: 1.3rem; margin-top: 30px; margin-bottom: 10px;" data-field="srazMapLabel2">⛪ Cíl – Penzion Fojtství</h3>
+            <h3 style="font-size: 1.3rem; margin-top: 30px; margin-bottom: 10px;" data-field="srazMapLabel2">🏰 Cíl – Zámecký areál Krásná Vyhlídka</h3>
             <div class="map-container" id="sraz-map2-container">
                 <iframe id="sraz-map2" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2584.34838055933!2d17.341055476812826!3d49.628888246176274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47124b8dff71466d%3A0xa5c218c03eac1012!2sPenzion%20Fojtstv%C3%AD!5e0!3m2!1scs!2scz!4v1775982817995!5m2!1scs!2scz" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
@@ -365,7 +386,7 @@
 
     <footer style="text-align: center; padding: 60px 20px; color: var(--primary); font-family: 'Playfair Display', serif;">
         <h2 data-field="footerTitle">Těšíme se na vás!</h2>
-        <p style="font-size: 1.5rem;" data-field="footerNames">❤️ Adéla & Jakub</p>
+        <p style="font-size: 1.5rem;" data-field="footerNames">❤️ Tereza & Martin</p>
     </footer>
 
     <!-- EDIT TOOLBAR -->
@@ -400,6 +421,19 @@
     <a href="#galerie" class="gallery-fab">🖼️ Galerie</a>
     <button class="fab-btn upload_trigger" title="Nahrát fotku">📸</button>
 
+    <!-- LOADING MODAL -->
+    <div id="loading-modal" role="status" aria-live="polite" aria-label="Načítám svatební stránku, chvíli strpení">
+        <div class="loading-content">
+            <div class="loading-rings">
+                <div class="loading-ring"></div>
+                <div class="loading-ring-inner">💍</div>
+            </div>
+            <p class="loading-title">Načítám svatební stránku</p>
+            <p class="loading-subtitle">Chvíli strpení... ✨</p>
+            <div class="loading-dots"><span></span><span></span><span></span></div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
@@ -427,6 +461,22 @@
         const DEFAULT_HERO_IMAGE = 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80';
         const DEFAULT_HERO_OVERLAY = 0.75;
 
+        // Ilustrační fotky ze svatby (Unsplash) – zobrazí se ve fotogalerii, dokud nejsou nahrány skutečné fotky
+        const STOCK_WEDDING_PHOTOS = [
+            'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1583939003579-fe5bac1eda68?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1529636444744-adffc9135a5e?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1550005809-91ad75fb315f?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1496092929083-cdddb3fd29b7?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=800&q=80',
+            'https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?auto=format&fit=crop&w=800&q=80'
+        ];
+
         // Default map URLs
         const DEFAULT_MAP1_EMBED = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2585.799276911016!2d17.22050497681161!3d49.601534548122665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47124f03c6fed89b%3A0x775332b8f7b9562b!2sGlobus%20Hypermarket!5e0!3m2!1scs!2scz!4v1775982606762!5m2!1scs!2scz';
         const DEFAULT_MAP1_NAV   = 'https://maps.app.goo.gl/dfqZEPGRZnEfUd8XA';
@@ -435,16 +485,16 @@
 
         // Default program items
         const defaultProgram = [
-            { emoji: '🚗', time: '11:30', title: 'Sraz – Globus Olomouc' },
-            { emoji: '⛪', time: '13:00', title: 'Svatební obřad' },
-            { emoji: '🍽️', time: '14:00', title: 'Svatební hostina' },
-            { emoji: '🎂', time: '15:00', title: 'Krájení dortu' },
-            { emoji: '🎸', time: '15:00', title: 'Příjezd DJ – kytara & zábava až do 21:00' },
-            { emoji: '💐', time: '16:00', title: 'Stříhání dámské i pánské kytice' },
-            { emoji: '🍸', time: '16:30', title: 'Otevření alko baru & raut v salonku' },
-            { emoji: '🎲', time: '17:30', title: 'Hry & tombola', note: 'Vezměte si s sebou <b>drobné</b> na tombolu! 🎉' },
-            { emoji: '💃', time: '19:00', title: 'První tanec' },
-            { emoji: '🎶', time: '19:30', title: 'Večerní zábava' }
+            { emoji: '🚗', time: '12:00', title: 'Sraz – Parkoviště u OC Olympia' },
+            { emoji: '🏰', time: '14:00', title: 'Svatební obřad' },
+            { emoji: '🥂', time: '14:45', title: 'Přípitky a gratulace' },
+            { emoji: '🍽️', time: '15:30', title: 'Slavnostní hostina' },
+            { emoji: '🎂', time: '17:00', title: 'Krájení svatebního dortu' },
+            { emoji: '🎸', time: '17:30', title: 'Živá hudba & zábava' },
+            { emoji: '💐', time: '18:30', title: 'Hod kytice' },
+            { emoji: '🍸', time: '19:00', title: 'Otevření cocktailového baru' },
+            { emoji: '🎲', time: '20:00', title: 'Hry & tombola', note: 'Vezměte si s sebou <b>drobné</b> na tombolu! 🎉' },
+            { emoji: '💃', time: '21:00', title: 'Večerní zábava & diskotéka' }
         ];
         // ==================================================================================
 
@@ -481,13 +531,13 @@
         // SEATING CHART  (generuje HTML a přidá data-field ke každé stoličce)
         // ==================================================================================
         const defaultSeating = {
-            top:    ["SESTRA NEV.", "NATÁLKA", "MÁMA NEV.", "TÁTA NEV.", "NEVĚSTA", "ŽENICH", "TÁTA ŽEN.", "MÁMA ŽEN.", "BRATR"],
-            b1l:    ["SÁRA", "MICHAL", "LOLA", "MAGDIČKA", "JAKUB"],
-            b1r:    ["MILAN", "MARIE", "LUCINKA", "ZUZANA"],
-            b2l:    ["ALICE", "SVĚDKYNĚ NEV.", "MARTIN", "VOJTĚCH", "MONIKA"],
-            b2r:    ["BABIČKA MARIE", "PETR", "PETRA", "KAROLÍNA", "PATRIK"],
-            b3l:    ["BABIČKA BOŽENA", "ROMAN", "JANA", "ONDŘEJ", "JAN"],
-            b3r:    ["LENKA", "PETR", "SVĚDEK ŽEN.", "DANIELA", "VOJTĚCH"]
+            top:    ["NEVĚSTA", "ŽENICH", "MATKA NEVĚSTY", "OTEC NEVĚSTY", "MATKA ŽENICHA", "OTEC ŽENICHA", "SVĚDKYNĚ", "SVĚDEK", "BABIČKA"],
+            b1l:    ["ANNA", "PETR", "KATEŘINA", "TOMÁŠ", "JANA"],
+            b1r:    ["LUKÁŠ", "MARTINA", "DAVID", "KLÁRA"],
+            b2l:    ["EVA", "VÁCLAV", "ZUZANA", "MAREK", "LUCIE"],
+            b2r:    ["PAVEL", "MARIE", "JAKUB", "TEREZA", "ONDŘEJ"],
+            b3l:    ["SIMONA", "RADEK", "ALENA", "MIROSLAV", "HANA"],
+            b3r:    ["JIŘÍ", "LENKA", "MARTIN", "PETRA", "VOJTĚCH"]
         };
         seatingState.names = JSON.parse(JSON.stringify(defaultSeating));
 
@@ -616,7 +666,20 @@
         onSnapshot(photosQuery, (snapshot) => {
             galleryEl.innerHTML = '';
             if (snapshot.empty) {
-                galleryEl.innerHTML = '<p class="loader-msg">Zatím tu nejsou žádné fotky. Buďte první!</p>';
+                // Zobrazit ilustrační fotky ze svatby z fotobanky
+                STOCK_WEDDING_PHOTOS.forEach(url => {
+                    const thumbUrl = url.replace('w=800', 'w=400');
+                    const anchor = document.createElement('a');
+                    anchor.href = url;
+                    anchor.dataset.fancybox = "gallery";
+                    anchor.title = "Ilustrační fotka";
+                    const img = document.createElement('img');
+                    img.src = thumbUrl;
+                    img.loading = "lazy";
+                    img.alt = "Ilustrační svatební fotka";
+                    anchor.appendChild(img);
+                    galleryEl.appendChild(anchor);
+                });
                 return;
             }
             snapshot.forEach(docSnap => {
@@ -1277,6 +1340,12 @@
                 if (snap.exists()) projectData = snap.data();
             } catch (e) {
                 console.warn('Firestore nedostupný, používám výchozí obsah.', e);
+            } finally {
+                // Skrytí loading modalu po načtení dat (nebo chybě)
+                const loadingModal = document.getElementById('loading-modal');
+                if (loadingModal) {
+                    loadingModal.classList.add('hidden');
+                }
             }
 
             applyColors(projectData.colors);
